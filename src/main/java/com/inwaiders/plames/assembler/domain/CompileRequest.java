@@ -16,10 +16,10 @@ import java.util.concurrent.Future;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.LoggerFactory;
 
-import com.inwaiders.plames.assembler.domain.dependencies.Dependency;
-import com.inwaiders.plames.assembler.domain.dependencies.HasSettingsLine;
-import com.inwaiders.plames.assembler.domain.dependencies.ProjectDependency;
+import com.inwaiders.plames.PlamesAssembler;
+import com.inwaiders.plames.assembler.domain.parts.Part;
 import com.inwaiders.plames.assembler.utils.LoggerUtils;
+import com.inwaiders.plames.assembler.utils.RamLogAppenger;
 
 import ch.qos.logback.classic.Logger;
 
@@ -27,7 +27,7 @@ public class CompileRequest {
 	
 	private Logger logger = null;
 	
-	private List<Dependency> dependencies = new ArrayList<>();
+	private List<Part> parts = new ArrayList<>();
 
 	private String gradleBuildPattern = null;
 	private String gradleSettingsPattern = null;
@@ -36,18 +36,27 @@ public class CompileRequest {
 	
 	private File rootFolder = null;
 	
+	private Set<Future<?>> asyncLoadersFutures = null;
+	
 	public CompileRequest() {
 		
+		if(PlamesAssembler.CONFIG.providersAsyncLoading) {
+			
+			this.asyncLoadersFutures = new HashSet<>();
+		}
 	}
 	
 	public CompileRequest(Logger logger, File rootFolder, File projectPattern) {
+		this();
 		
 		this.logger = logger;
 		this.projectPattern = projectPattern;
 		this.rootFolder = rootFolder;
+	
+		logger.addAppender(new RamLogAppenger(logger.getLoggerContext(), "ram"));
 	}
 	
-	public void build() throws Exception {
+	public CompileReport build() throws Exception {
 		
 		long start = System.currentTimeMillis();
 		
@@ -60,6 +69,10 @@ public class CompileRequest {
 		long end = System.currentTimeMillis();
 		
 		logger.info("Build complete in "+new DecimalFormat("##.00").format((end-start)/1000D)+" s");
+	
+		CompileReport report = createReport();
+	
+		return report;
 	}
 	
 	public void create() throws IOException {
@@ -97,34 +110,17 @@ public class CompileRequest {
 	
 	public void load() throws Exception {
 		
-		loadDependecnies();
+		loadParts();
 	}
 	
-	public void loadDependecnies() throws Exception {
+	public void loadParts() throws Exception {
 		
-		Set<Future<?>> futures = new HashSet<>();
-		
-		for(Dependency dep : dependencies) {
-			
-			if(dep instanceof ProjectDependency) {
-			
-				ProjectDependency projectDep = (ProjectDependency) dep;
-				
-				futures.add(projectDep.asyncLoad(this));
-			}
+		for(Part part : parts) {
+
+			part.load(this);
 		}
 		
-		for(Future<?> future : futures) {
-			
-			/*
-			logger.info("Wait git...");
-			Thread.sleep(100);
-			
-			if(!future.isDone()) {
-				
-				continue;
-			}
-			*/
+		for(Future<?> future : asyncLoadersFutures) {
 			
 			future.get();
 		}
@@ -132,14 +128,9 @@ public class CompileRequest {
 	
 	public void compile() throws Exception {
 		
-		for(Dependency dep : dependencies) {
+		for(Part part : parts) {
 			
-			if(dep instanceof ProjectDependency) {
-				
-				ProjectDependency projectDep = (ProjectDependency) dep;
-				
-				projectDep.prepare(this);
-			}
+			part.prepareToCompile(this);
 		}
 		
 		Process gradleProcess = new ProcessBuilder("cmd", "/c", "gradlew", "bootJar")
@@ -172,6 +163,21 @@ public class CompileRequest {
 		}
 	}
 	
+	public CompileReport createReport() {
+		
+		logger.info("Create report...");
+		
+		CompileReport report = CompileReport.create();
+			report.setLog(((RamLogAppenger) logger.getAppender("ram")).getLog());
+			report.setParts(new HashSet<>(this.parts));
+			report.setGradleBuildPattern(this.gradleBuildPattern);	
+			report.setGradleSettingsPattern(this.gradleSettingsPattern);
+			
+		logger.info("Report create complete!");
+			
+		return report;
+	}
+	
 	public void writeGradleBuild(String gradleBuildData) throws IOException {
 		
 		File gradleBuild = new File(rootFolder, "build.gradle");
@@ -198,7 +204,7 @@ public class CompileRequest {
 		
 		StringBuilder compiledDependencies = new StringBuilder();
 		
-			for(Dependency dep : dependencies) {
+			for(Part dep : parts) {
 				
 				compiledDependencies.append(dep.getGradleDependencyLine()+"\n");
 			}
@@ -212,11 +218,13 @@ public class CompileRequest {
 		
 		StringBuilder compiledSettings = new StringBuilder();
 		
-		for(Dependency dep : dependencies) {
-			
-			if(dep instanceof HasSettingsLine) {
-			
-				compiledSettings.append(((HasSettingsLine) dep).getSettingsLine()+"\n");
+		for(Part dep : parts) {
+
+			String settignsLine = dep.getSettingsLine();
+		
+			if(settignsLine != null && !settignsLine.isEmpty()) {
+				
+				compiledSettings.append(settignsLine+"\n");
 			}
 		}
 		
@@ -224,10 +232,15 @@ public class CompileRequest {
 		
 		return compilePattern;
 	}
+
+	public Set<Future<?>> getAsyncLoadersFutures() {
+
+		return this.asyncLoadersFutures;
+	}
 	
-	public void addDependency(Dependency dep) {
+	public void addPart(Part dep) {
 		
-		dependencies.add(dep);
+		parts.add(dep);
 	}
 	
 	public File getRootFolder() {

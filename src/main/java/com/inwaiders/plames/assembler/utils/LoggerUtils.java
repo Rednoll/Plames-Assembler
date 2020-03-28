@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 
 import ch.qos.logback.classic.Logger;
 
-
 public class LoggerUtils {
 
 	private static Field loggerParentField = null;

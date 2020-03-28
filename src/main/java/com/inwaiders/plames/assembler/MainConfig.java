@@ -8,6 +8,9 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("file:main.properties")
 public class MainConfig {
 
-	@Value("${git.loaders.count}")
-	public int gitLoadersCount;
+	@Value("${providers.loaders.count}")
+	public int providersLoadersCount;
+	
+	@Value("${providers.async_loading}")
+	public boolean providersAsyncLoading;
 }
