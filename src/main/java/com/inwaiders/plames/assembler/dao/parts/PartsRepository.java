@@ -8,4 +8,5 @@ import com.inwaiders.plames.assembler.domain.parts.Part;
 @Repository
 public interface PartsRepository extends JpaRepository<Part, Long>{
 
+	public Part findByName(String name);
 }

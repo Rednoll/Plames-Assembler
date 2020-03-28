@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.inwaiders.plames.assembler.domain.embodiments.Embodiment;
 
 @Repository
-public interface EmbodimentRepository extends JpaRepository<Embodiment<?>, Long>{
+public interface EmbodimentRepository extends JpaRepository<Embodiment<?, ?>, Long>{
 
 }

@@ -13,16 +13,14 @@ import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.parts.Compilable;
 import com.inwaiders.plames.assembler.domain.parts.HasSettingsLine;
 import com.inwaiders.plames.assembler.domain.providers.SrcProvider;
+import com.inwaiders.plames.assembler.dto.embodiments.GradleProjectDto;
 
 import ch.qos.logback.classic.Logger;
 
 @Entity(name = "GradleProject")
 @Table(name = "gradle_projects")
-public class GradleProject extends Embodiment<SrcProvider> implements HasSettingsLine, Compilable {
+public class GradleProject extends Embodiment<SrcProvider<?>, GradleProjectDto> implements HasSettingsLine, Compilable {
 
-	@Column(name = "name")
-	private String name = null;
-	
 	public void load(CompileRequest request) throws Exception {
 	
 		File rootFolder = request.getRootFolder();
@@ -55,14 +53,18 @@ public class GradleProject extends Embodiment<SrcProvider> implements HasSetting
 		}
 	}
 	
-	public void setName(String name) {
+	@Override
+	public GradleProjectDto toDto() {
 		
-		this.name = name;
+		GradleProjectDto dto = new GradleProjectDto();
+			this.toDto(dto);
+			
+		return dto;
 	}
 	
-	public String getName() {
+	public void toDto(GradleProjectDto dto) {
 		
-		return this.name;
+		super.toDto(dto);
 	}
 	
 	@Override

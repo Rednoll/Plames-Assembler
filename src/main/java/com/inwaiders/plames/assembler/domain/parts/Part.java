@@ -9,12 +9,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import com.inwaiders.plames.assembler.dao.parts.PartsRepository;
 import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.embodiments.Embodiment;
-import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
+import com.inwaiders.plames.assembler.dto.PartDto;
 import com.inwaiders.plames.eco.domain.user.User;
 
 @Entity(name = "Part")
@@ -41,6 +40,31 @@ public abstract class Part {
 	public void load(CompileRequest request) throws Exception {
 		
 		embodiment.load(request);
+	}
+	
+	public void loadFromDto(PartDto dto) {
+		
+		this.name = dto.name;
+		this.embodiment = Embodiment.findById(dto.embodiment.id);
+		this.embodiment.loadFromDto(dto.embodiment);
+		this.owner = User.findById(dto.owner.id);
+		this.owner.loadFromDto(dto.owner);
+	}
+	
+	public PartDto toDto() {
+		
+		PartDto dto = new PartDto();
+			toDto(dto);
+			
+		return dto;
+	}
+	
+	public void toDto(PartDto dto) {
+		
+		dto.id = this.getId();
+		dto.name = this.getName();
+		dto.owner = this.getOwner().toDto();
+		dto.embodiment = this.getEmbodiment().toDto();
 	}
 	
 	public void prepareToCompile(CompileRequest request) {
@@ -78,7 +102,7 @@ public abstract class Part {
 		this.embodiment = emb;
 	}
 	
-	public Embodiment geEmbodiment() {
+	public Embodiment getEmbodiment() {
 		
 		return this.embodiment;
 	}
@@ -91,6 +115,11 @@ public abstract class Part {
 	public User getOwner() {
 		
 		return this.owner;
+	}
+	
+	public void setName(String name) {
+		
+		this.name = name;
 	}
 	
 	public String getName() {
@@ -106,6 +135,11 @@ public abstract class Part {
 	public void save() {
 		
 		repository.save(this);
+	}
+	
+	public static Part findByName(String name) {
+		
+		return repository.findByName(name);
 	}
 	
 	public static Part findById(Long id) {

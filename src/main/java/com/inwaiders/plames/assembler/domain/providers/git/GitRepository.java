@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
 import com.inwaiders.plames.assembler.domain.providers.SrcProvider;
+import com.inwaiders.plames.assembler.dto.providers.git.GitRepositoryDto;
 import com.inwaiders.plames.assembler.utils.LoggerUtils;
 import com.inwaiders.plames.eco.domain.user.User;
 
@@ -22,7 +23,7 @@ import ch.qos.logback.classic.Logger;
 
 @Entity(name = "GitRepository")
 @Table(name = "git_repositories")
-public class GitRepository extends ProviderBase implements SrcProvider {
+public class GitRepository extends ProviderBase<GitRepositoryDto> implements SrcProvider<GitRepositoryDto> {
 
 	@Column(name = "is_public")
 	private boolean isPublic = false;
@@ -37,6 +38,33 @@ public class GitRepository extends ProviderBase implements SrcProvider {
 	@JoinColumn(name = "owner_id")
 	@OneToOne(targetEntity = User.class)
 	private User owner = null;
+	
+	public void loadFromDto(GitRepositoryDto dto) {
+		
+		super.loadFromDto(dto);
+		
+		this.isPublic = dto.isPublic;
+		this.address = dto.address;
+		this.owner = User.findById(owner.getId());
+		this.owner.loadFromDto(dto.owner);
+	}
+	
+	public GitRepositoryDto toDto() {
+		
+		GitRepositoryDto dto = new GitRepositoryDto();
+			this.toDto(dto);
+		
+		return dto;
+	}
+	
+	public void toDto(GitRepositoryDto dto) {
+		
+		super.toDto(dto);
+		
+		dto.address = this.getAddress();
+		dto.isPublic = this.isPublic();	
+		dto.owner = this.getOwner().toDto();
+	}
 	
 	@Override
 	public void load(CompileRequest request, File destination) throws Exception {

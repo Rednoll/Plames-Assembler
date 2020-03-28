@@ -1,0 +1,15 @@
+.plames-part-label {
+
+	border-left: 0px solid lightgrey;
+	border-top: 0px solid lightgrey;
+	border-right: 0px solid lightgrey;
+	border-bottom: 3.5px solid #BAE1FF;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+	background: white;
+
+	margin-right: 1vw;
+
+	min-width: 100px;
+	min-height: 25px;
+}

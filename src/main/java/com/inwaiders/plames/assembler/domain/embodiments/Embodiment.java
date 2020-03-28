@@ -1,5 +1,6 @@
 package com.inwaiders.plames.assembler.domain.embodiments;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,16 +14,20 @@ import com.inwaiders.plames.assembler.dao.embodiments.EmbodimentRepository;
 import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.providers.Provider;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
+import com.inwaiders.plames.assembler.dto.EmbodimentDto;
 
 @Entity(name = "Embodiment")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Embodiment<ProviderType extends Provider> {
+public abstract class Embodiment<ProviderType extends Provider, DTO extends EmbodimentDto> {
 	
 	protected static EmbodimentRepository repository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
+
+	@Column(name = "name")
+	protected String name = null;
 	
 	@JoinColumn(name = "provider_id")
 	@OneToOne(targetEntity = ProviderBase.class)
@@ -32,6 +37,21 @@ public abstract class Embodiment<ProviderType extends Provider> {
 	
 	public abstract String getGradleDependencyLine();
 	
+	public void loadFromDto(DTO dto) {
+		
+		this.name = dto.name;
+		this.provider.loadFromDto(dto.provider);
+	}
+	
+	public abstract DTO toDto();
+	
+	public void toDto(EmbodimentDto dto) {
+		
+		dto.id = this.getId();
+		dto.provider = this.getProvider().toDto();
+		dto.name = this.name;
+	}
+	
 	public void setProvider(ProviderType provider) {
 		
 		this.provider = provider;
@@ -40,6 +60,16 @@ public abstract class Embodiment<ProviderType extends Provider> {
 	public ProviderType getProvider() {
 		
 		return this.provider;
+	}
+	
+	public void setName(String name) {
+		
+		this.name = name;
+	}
+	
+	public String getName() {
+		
+		return this.name;
 	}
 	
 	public Long getId() {

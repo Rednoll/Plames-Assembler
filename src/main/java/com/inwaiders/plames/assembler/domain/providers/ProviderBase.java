@@ -8,16 +8,28 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import com.inwaiders.plames.assembler.dao.providers.ProviderRepository;
+import com.inwaiders.plames.assembler.dto.providers.ProviderBaseDto;
 
 @Entity(name = "ProviderBase")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class ProviderBase implements Provider {
+public abstract class ProviderBase<DTO extends ProviderBaseDto> implements Provider<DTO> {
 	
 	protected static ProviderRepository repository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
+	
+	public void loadFromDto(DTO dto) {
+		
+	}
+	
+	public abstract DTO toDto();
+	
+	public void toDto(ProviderBaseDto dto) {
+		
+		dto.id = this.id;
+	}
 	
 	public Long getId() {
 		

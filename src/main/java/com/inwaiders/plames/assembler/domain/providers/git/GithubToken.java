@@ -6,9 +6,11 @@ import javax.persistence.Table;
 
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import com.inwaiders.plames.assembler.dto.providers.git.GithubTokenDto;
+
 @Entity(name = "GithubToken")
 @Table(name = "github_tokens")
-public class GithubToken extends GitCredential {
+public class GithubToken extends GitCredential<GithubTokenDto> {
 
 	@Column(name = "token")
 	private String token = null;
@@ -18,6 +20,26 @@ public class GithubToken extends GitCredential {
 	public GithubToken(String token) {
 		
 		this.token = token;
+	}
+	
+	public void loadFromDto(GithubTokenDto dto) {
+		
+		this.token = dto.token;
+	}
+	
+	public GithubTokenDto toDto() {
+		
+		GithubTokenDto dto = new GithubTokenDto();
+			this.toDto(dto);
+			
+		return dto;
+	}
+	
+	public void toDto(GithubTokenDto dto) {
+		
+		super.toDto(dto);
+		
+		dto.token = this.token;
 	}
 	
 	public void setToken(String token) {
