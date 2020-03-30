@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.inwaiders.plames.assembler.domain.parts.Part;
 
 @Service
-public class PartsRepositoryInjector {
+public class PartRepositoryInjector {
 
 	@Autowired
-	private PartsRepository repository;
+	private PartRepository<Part, Long> repository;
 	
 	@PostConstruct
 	public void inject() {

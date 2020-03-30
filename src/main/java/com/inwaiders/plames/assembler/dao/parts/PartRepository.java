@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.inwaiders.plames.assembler.domain.parts.Part;
 
 @Repository
-public interface PartsRepository extends JpaRepository<Part, Long>{
+public interface PartRepository<T extends Part, ID extends Long> extends JpaRepository<T, ID>{
 
 	public Part findByName(String name);
 }

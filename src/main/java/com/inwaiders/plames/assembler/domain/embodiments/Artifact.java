@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import com.inwaiders.plames.assembler.domain.CompileRequest;
-import com.inwaiders.plames.assembler.dto.EmbodimentDto;
+import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
 
 @Entity(name = "Artifact")
 @Table(name = "artifacts")

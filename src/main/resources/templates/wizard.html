@@ -3,18 +3,66 @@
     <style>
 
         @import url("../resources/common/common.css");
+        @import url("../resources/wizard/css/wizard.css");
         @import url("../resources/wizard/css/plames-part-label.css");
         @import url("../resources/wizard/css/plames-parts-area.css");
+        @import url("../resources/wizard/css/plames-modules-search.css");
 
     </style>
 
-    <body onload="init()">
+    <body onload="init()" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
         <script> var exports = {}; </script>
         
         <script src="../resources/wizard/scripts/wizard.js"></script>
 
-        <div id="bootloaders-list" class="plames-parts-area" style="border: 1px solid red;"><!-- LOAD BY JQUERY--></div>
+        <div class="site-module-container horizontal" style="width: 80vw; height: 45vh; min-height: 300px; max-height: 60vh; padding: 0px;">
+
+            <div style="flex-grow: 1; margin: 15px;">
+
+                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+
+                    <p class="h-main"><span style="color: lightgrey">Step 1. Select </span>Bootloader:</p>
+
+                    <div id="bootloaders-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                </div>
+
+                <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
+
+                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+
+                    <p class="h-main"><span style="color: lightgrey">Step 2. Select </span>Core:</p>
+
+                    <div id="cores-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                </div>
+
+                <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
+
+                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+
+                    <p class="h-main"><span style="color: lightgrey">Step 3. Add </span>Modules:</p>
+
+                    <div id="modules-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                </div>
+
+            </div>
+
+            <div style="border-left: 1px solid lightgrey"></div>
+
+            <div style="flex-grow: 4; padding-top: 15px;">
+
+                <p class="h-main" style="margin-left: 15px;">Modules repository</p>
+
+                <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
+
+                <div id="modules-search" class="sub-module-container plames-modules-search" style="height: 100%; position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
+
+            </div>
+        
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     

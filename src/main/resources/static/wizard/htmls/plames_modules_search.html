@@ -1,0 +1,76 @@
+<style>
+
+	.name-field {
+
+		position: relative;
+
+		width: 100%;
+
+		border: none;
+		outline: none;
+	
+		font-family: "Metropolis", Arial, sans-serif;
+		font-size: 18;
+		font-weight: 500;
+		color: #7892A3;
+
+		padding: 10px;
+	}
+
+	.search-data-container {
+
+		position: relative;
+		width: 100%;
+
+		border: none;
+		border-bottom: 1px solid lightgrey;
+	}
+
+	.suspects-container {
+
+		overflow-y: auto;
+		padding: 10px;
+
+		box-sizing: border-box;
+
+		height: 100%;
+		width: 100%;
+	}
+
+	.suspects-container::-webkit-scrollbar {
+
+		display: none;
+	}
+
+	input::-webkit-input-placeholder {
+		
+		color: gray;
+		opacity: 0.35;
+	}
+
+	.suspect-module {
+
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+
+		border: none;
+		border-bottom: 1px solid lightgrey;
+	}
+
+</style>
+
+<div class="search-data-container">
+	<input type="text" placeholder="Market" class="name-field" />
+</div>
+
+<div class="suspects-container">
+
+	<div class="suspect-module prototype">
+
+		<p class="h-sub name" style="margin-bottom: 8px;"></p>
+
+		<p class="standard-text description"></p>
+
+	</div>
+
+</div>

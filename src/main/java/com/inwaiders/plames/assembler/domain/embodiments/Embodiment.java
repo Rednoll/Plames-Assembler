@@ -14,7 +14,7 @@ import com.inwaiders.plames.assembler.dao.embodiments.EmbodimentRepository;
 import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.providers.Provider;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
-import com.inwaiders.plames.assembler.dto.EmbodimentDto;
+import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
 
 @Entity(name = "Embodiment")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

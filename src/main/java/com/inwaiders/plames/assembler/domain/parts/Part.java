@@ -1,5 +1,7 @@
 package com.inwaiders.plames.assembler.domain.parts;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,17 +12,17 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.inwaiders.plames.assembler.dao.parts.PartsRepository;
+import com.inwaiders.plames.assembler.dao.parts.PartRepository;
 import com.inwaiders.plames.assembler.domain.CompileRequest;
 import com.inwaiders.plames.assembler.domain.embodiments.Embodiment;
-import com.inwaiders.plames.assembler.dto.PartDto;
+import com.inwaiders.plames.assembler.dto.parts.PartDto;
 import com.inwaiders.plames.eco.domain.user.User;
 
 @Entity(name = "Part")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Part {
 
-	protected static PartsRepository repository;
+	protected static PartRepository<Part, Long> repository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,6 +31,9 @@ public abstract class Part {
 	@Column(name = "name")
 	private String name = null;
 	
+	@Column(name = "description", length = 1024)
+	private String description = null;
+	
 	@JoinColumn(name = "embodiment_id")
 	@OneToOne(targetEntity = Embodiment.class)
 	private Embodiment embodiment = null;
@@ -36,6 +41,9 @@ public abstract class Part {
 	@JoinColumn(name = "owner_id")
 	@OneToOne(targetEntity = User.class)
 	private User owner = null;
+	
+	@Column(name = "icon", length = 1024)
+	private String icon = null;
 	
 	public void load(CompileRequest request) throws Exception {
 		
@@ -49,6 +57,8 @@ public abstract class Part {
 		this.embodiment.loadFromDto(dto.embodiment);
 		this.owner = User.findById(dto.owner.id);
 		this.owner.loadFromDto(dto.owner);
+		this.icon = dto.icon;
+		this.description = dto.description;
 	}
 	
 	public PartDto toDto() {
@@ -65,6 +75,8 @@ public abstract class Part {
 		dto.name = this.getName();
 		dto.owner = this.getOwner().toDto();
 		dto.embodiment = this.getEmbodiment().toDto();
+		dto.icon = this.getIcon();
+		dto.description = this.getDescription();
 	}
 	
 	public void prepareToCompile(CompileRequest request) {
@@ -97,6 +109,16 @@ public abstract class Part {
 		return null;
 	}
 	
+	public void setIcon(String icon) {
+		
+		this.icon = icon;
+	}
+	
+	public String getIcon() {
+		
+		return this.icon;
+	}
+	
 	public void setEmbodiment(Embodiment emb) {
 		
 		this.embodiment = emb;
@@ -127,6 +149,16 @@ public abstract class Part {
 		return this.name;
 	}
 	
+	public void setDescription(String desc) {
+		
+		this.description = desc;
+	}
+	
+	public String getDescription() {
+		
+		return this.description;
+	}
+	
 	public Long getId() {
 		
 		return this.id;
@@ -147,7 +179,12 @@ public abstract class Part {
 		return repository.getOne(id);
 	}
 	
-	public static void setRepository(PartsRepository rep) {
+	public static List<Part> findAll() {
+	
+		return repository.findAll();
+	}
+	
+	public static void setRepository(PartRepository rep) {
 		
 		repository = rep;
 	}

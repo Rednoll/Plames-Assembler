@@ -4,11 +4,12 @@ export class LabelsArea {
 
     //partLabels: PartLabel[] = new Array();
 
-    constructor(jquery) {
+    constructor(jquery, selectable) {
 
         this.jquery = jquery;
         this.partLabels = new Array();
-        
+        this.selectable = selectable
+
         $.ajax({
 
             url: "../resources/wizard/htmls/plames_parts_area.html",
@@ -22,12 +23,47 @@ export class LabelsArea {
         });
     }
 
+    loadFromJson(jsonArray) {
+
+        for(let index in jsonArray) {
+
+            let jsonPart = jsonArray[index]; 
+
+            let part = Part.createFromJson(jsonPart);
+
+            this.createLabel(part);
+        }
+
+        if(this.partLabels.length == 1) {
+
+            this.selectPart(this.partLabels[0])
+        }
+    }
+
+    selectPart(partLabel) {
+
+        if(!this.selectable) return;
+
+        if(partLabel instanceof Part) {
+
+            partLabel = this.getLabel(partLabel);
+        }
+
+        this.jquery.find(".selected").removeClass("selected");
+
+        partLabel.jquery.addClass("selected");
+    
+        this.selectedPart = partLabel.part
+    }
+
     createLabel(part) {
+
+        this.hideEmpty();
         
         let jqueryLabel = this.jquery.find(".prototype").first().clone()
             jqueryLabel.removeClass("prototype")
             
-        let partLabel = new PartLabel(part, jqueryLabel);
+        let partLabel = new PartLabel(this, part, jqueryLabel);
 
         jqueryLabel.appendTo(this.jquery);
 
@@ -61,6 +97,26 @@ export class LabelsArea {
         this.partLabels.filter((value) => value != partLabel)
         
         partLabel.dispose();
+
+        if(this.partLabels.length == 0) {
+
+            this.showEmpty();
+        }
+    }
+
+    setTextOnEmpty(text) {
+
+        this.jquery.find(".empty-container").find(".empty-text").html(text);
+    }
+
+    hideEmpty() {
+
+        this.jquery.find(".empty-container").css({"display": "none"})
+    }
+
+    showEmpty() {
+    
+        this.jquery.find(".empty-container").css({"display": "inline-block"})
     }
 }
 
@@ -70,12 +126,19 @@ export class PartLabel {
 
     //part: Part;
 
-    constructor(part, jqueryLabel) {
+    constructor(area, part, jqueryLabel) {
         
+        this.area = area;
         this.part = part;
         this.jquery = jqueryLabel;
 
-        jqueryLabel.find(".name").val(this.part.name);
+        jqueryLabel.find(".name").html(part.name);
+        jqueryLabel.find(".icon").attr("src", part.icon);
+    
+        jqueryLabel.click(function(event) {
+            
+            area.selectPart(part);
+        });
     }
 
     dispose() {
@@ -88,8 +151,14 @@ export class Part {
 
     //name: string;
 
-    constructor(name) { 
+    constructor(name, icon) { 
 
         this.name = name;
+        this.icon = icon;
+    }
+
+    static createFromJson(json) {
+
+        return new Part(json.name, json.icon)
     }
 }

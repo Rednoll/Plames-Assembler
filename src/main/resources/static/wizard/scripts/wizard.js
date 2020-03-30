@@ -6,7 +6,35 @@ async function init() {
 
     let bootloadersList = $("#bootloaders-list");
 
-    let testArea = new PlamesPart.LabelsArea(bootloadersList);
+    let bootloadersArea = new PlamesPart.LabelsArea(bootloadersList, true);
 
-    testArea.createLabel(new PlamesPart.Part("Test"));
+    $.get("../rest/parts/bootloaders", (data)=> {
+
+    	bootloadersArea.loadFromJson(data);
+    })
+
+    let coresList = $("#cores-list");
+
+    let coresArea = new PlamesPart.LabelsArea(coresList, true);
+
+    $.get("../rest/parts/cores", (data)=> {
+
+    	coresArea.loadFromJson(data);
+    })
+
+    let modulesList = $("#modules-list");
+
+    let modulesArea = new PlamesPart.LabelsArea(modulesList, true);
+        modulesArea.setTextOnEmpty("Please add modules from repository!");
+
+    $("#modules-search").load("../resources/wizard/htmls/plames_modules_search.html");
+
+    let PlamesModulesSearch = await import("./plames_modules_search.js"); 
+
+    let modulesSearch = new PlamesModulesSearch.ModulesSearch($("#modules-search"))
+
+    $.get("../rest/parts/modules", (data)=> {
+
+        modulesSearch.loadFromJsonArray(data);
+    })
 }

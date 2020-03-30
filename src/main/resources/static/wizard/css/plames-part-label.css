@@ -3,7 +3,7 @@
 	border-left: 0px solid lightgrey;
 	border-top: 0px solid lightgrey;
 	border-right: 0px solid lightgrey;
-	border-bottom: 3.5px solid #BAE1FF;
+	border-bottom: 4px solid #BAE1FF;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
 	background: white;
@@ -12,4 +12,55 @@
 
 	min-width: 100px;
 	min-height: 25px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 18;
+	font-weight: 500;
+	color: #7892A3;
+
+	cursor: pointer;
+
+	transition-duration: 0.3s;
+
+	user-select: none;
+}
+
+.plames-part-label.selected {
+
+	transition-duration: 0.3s;
+
+	border-bottom: 4px solid #7fff00;
+}
+
+.plames-part-label > p {
+
+	margin: 5px;
+	margin-top: 6px;
+	margin-right: 7px;
+	vertical-align: center;
+
+	cursor: pointer;
+}
+
+.plames-part-label > img {
+
+	margin: 5px;
+	margin-bottom: 7px;
+	margin-right: 0px;
+	margin-left: 7px;
+
+	size: 20px, 20px;
+	
+	min-height: 20px;
+	min-width: 20px;
+
+	max-height: 20px;
+	max-width: 20px;
+
+	cursor: pointer;
 }

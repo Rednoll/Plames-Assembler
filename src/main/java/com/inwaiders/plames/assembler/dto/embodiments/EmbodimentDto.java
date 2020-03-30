@@ -1,4 +1,4 @@
-package com.inwaiders.plames.assembler.dto;
+package com.inwaiders.plames.assembler.dto.embodiments;
 
 import com.inwaiders.plames.assembler.dto.providers.ProviderDto;
 

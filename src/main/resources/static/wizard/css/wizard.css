@@ -1,0 +1,43 @@
+.h-main {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 22;
+	font-weight: 550;
+	color: #7892A3;
+	margin: 0px;
+}
+
+.h-sub {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 18;
+	font-weight: 550;
+	color: #7892A3;
+	margin: 0px;
+}
+
+.standard-text {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 16;
+	font-weight: 550;
+	color: silver;
+	margin: 0px;
+}
+
+.site-module-container {
+
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+	padding: 15px;
+}
+
+.site-module-container.horizontal {
+
+	display: flex;
+	flex-direction: row;
+}
+
+.site-module-container > .sub-module-container {
+
+	border: 0px solid lightgrey;
+}
