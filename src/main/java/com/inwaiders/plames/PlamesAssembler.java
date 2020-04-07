@@ -39,7 +39,32 @@ public class PlamesAssembler {
 			e.printStackTrace();
 		}
 		*/
-		//new GithubToken("6bba7779579bbf720aea43ac29cd577f4ae19284")
+		
+		/*
+		User user = User.findByNickname("test_user");
+		
+		Part module = PartCore.create();
+			module.setOwner(user);
+			module.setName("Plames Core");
+			
+			GradleProject project = new GradleProject();
+				project.setName("Plames-Core");
+				
+				GitRepository repo = new GitRepository();
+					repo.setAddress("https://github.com/Rednoll/Plames-Core.git");
+					repo.setPublic(false);
+					repo.setOwner(user);
+					
+				repo.save();
+				
+				project.setProvider(repo);
+				
+			project.save();
+			
+			module.setEmbodiment(project);
+		
+		module.save();
+		*/
 		
 		/*
 		User user = User.findByNickname("test_user");
@@ -68,6 +93,9 @@ public class PlamesAssembler {
 		*/
 					
 		/*
+	
+		GithubToken token = GithubToken.create("6bba7779579bbf720aea43ac29cd577f4ae19284");
+		
 		User user = User.create();
 			user.setNickname("test_user");
 			user.addCredential(token);

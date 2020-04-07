@@ -64,3 +64,66 @@
 
 	cursor: pointer;
 }
+
+.part-context-menu {
+
+	display: none;
+	z-index: 1000;
+	position: absolute;
+	overflow: hidden;
+	border: 1px solid #CCC;
+	white-space: nowrap;
+	font-family: sans-serif;
+ 	background: #FFF;
+ 	color: #333;
+	border-radius: 5px;
+	padding: 0;
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 16;
+	font-weight: 500;
+	color: #7892A3;
+}
+
+.part-context-menu > li {
+
+	padding: 8px;
+	cursor: pointer;
+	list-style-type: none;
+	transition: all .3s ease;
+	user-select: none;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.part-context-menu > li > img {
+
+	margin: 0px;
+	margin-right: 8px;
+	
+	size: 16px, 16px;
+	
+	min-height: 16px;
+	min-width: 16px;
+
+	max-height: 16px;
+	max-width: 16px;
+
+	cursor: pointer;
+}
+
+.part-context-menu > li > p {
+
+	margin: 0px;
+	vertical-align: center;
+
+	cursor: pointer;
+}
+
+.part-context-menu > li:hover {
+
+	background-color: #F2F5F7;
+}

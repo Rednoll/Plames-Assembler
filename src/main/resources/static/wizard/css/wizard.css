@@ -37,6 +37,13 @@
 	flex-direction: row;
 }
 
+.site-module-container.vertical {
+
+	display: flex;
+	flex-direction: column;
+}
+
+
 .site-module-container > .sub-module-container {
 
 	border: 0px solid lightgrey;

@@ -1,3 +1,6 @@
+export let context_menu_part = null;
+export let context_menu_area = null;
+
 export class LabelsArea {
 
     //jquery: JQuery;
@@ -44,7 +47,7 @@ export class LabelsArea {
 
         if(!this.selectable) return;
 
-        if(partLabel instanceof Part) {
+        if(!(partLabel instanceof PartLabel)) {
 
             partLabel = this.getLabel(partLabel);
         }
@@ -89,12 +92,12 @@ export class LabelsArea {
 
     removeLabel(partLabel) {
         
-        if(partLabel instanceof Part) {
+        if(!(partLabel instanceof PartLabel)) {
 
             partLabel = this.getLabel(partLabel);
         }
 
-        this.partLabels.filter((value) => value != partLabel)
+        this.partLabels.splice(this.partLabels.indexOf(partLabel), 1);
         
         partLabel.dispose();
 
@@ -135,9 +138,23 @@ export class PartLabel {
         jqueryLabel.find(".name").html(part.name);
         jqueryLabel.find(".icon").attr("src", part.icon);
     
-        jqueryLabel.click(function(event) {
+        jqueryLabel.click((event)=> {
             
             area.selectPart(part);
+        });
+
+        jqueryLabel.contextmenu((event)=> {
+
+            event.preventDefault();
+
+            context_menu_part = part;
+            context_menu_area = area;
+
+            $(".part-context-menu").finish().toggle(100).
+            css({
+                top: event.pageY + "px",
+                left: event.pageX + "px"
+            });
         });
     }
 
@@ -151,14 +168,15 @@ export class Part {
 
     //name: string;
 
-    constructor(name, icon) { 
+    constructor(id, name, icon) { 
 
+        this.id = id;
         this.name = name;
         this.icon = icon;
     }
 
     static createFromJson(json) {
 
-        return new Part(json.name, json.icon)
+        return new Part(json.id, json.name, json.icon)
     }
 }

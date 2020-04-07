@@ -57,9 +57,9 @@ public class GithubToken extends GitCredential<GithubTokenDto> {
 		return new UsernamePasswordCredentialsProvider(token, "");
 	}
 	
-	public static GithubToken create() {
-		
-		GithubToken token = new GithubToken();
+	public static GithubToken create(String txt) {
+
+		GithubToken token = new GithubToken(txt);
 		
 		token = repository.save(token);
 		
