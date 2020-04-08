@@ -18,9 +18,9 @@
 
         <div class="site-module-container vertical" style="width: 80vw; height: 65vh; min-height: 300px; max-height: 60vh; padding: 0px;">
 
-            <div style="display: flex; flex-direction: row; flex-grow: 3.5;">
+            <div id="settings-content-container" style="display: flex; flex-direction: row; flex-grow: 3.5;">
 
-                <div style="flex-grow: 1; margin: 15px; flex-basis: 40vw;">
+                <div id="modules-steps-area">
 
                     <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
 
@@ -52,7 +52,7 @@
 
                 </div>
 
-                <div style="border-left: 1px solid lightgrey"></div>
+                <div id="modules-steps-area-delimeter" style="border-left: 1px solid lightgrey"></div>
 
                 <div style="flex-grow: 4; padding-top: 15px; flex-basis: 60vw;">
 
@@ -60,7 +60,21 @@
 
                     <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
 
-                    <div id="modules-search" class="sub-module-container plames-modules-search" style="height: 100%; position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
+                    <div id="modules-search" class="sub-module-container plames-modules-search" style="position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
+
+                </div>
+
+            </div>
+
+            <div id="generation-content-container" class="generation-content-container hidden">
+
+                <p class="h-main" style="margin-left: 15px; margin-top: 15px;">Compile console</p>
+
+                <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
+
+                <div class="compile-console-log-container">
+
+                    <p id="compile-console-log" class="compile-console-log"><!-- FILLING BY LOG FROM SERVER --></p>
 
                 </div>
 
@@ -68,9 +82,15 @@
 
             <div style="border-bottom: 1px solid lightgrey"></div>
 
-            <div class="sub-module-container" style="padding: 15px; margin-left: 3px; margin-right: 3px; flex-grow: 1;">
-                
-                <p class="h-main"><span style="color: lightgrey">Step 4. Finally</span> Build & Get!</p>
+            <div class="sub-module-container" style="padding: 15px; margin-left: 3px; margin-right: 3px; flex-grow: 0;">
+
+                <p class="h-main" style="margin-bottom: 10px;"><span style="color: lightgrey">Step 4. Finally</span> Build & Get!</p>
+
+                <div style="display: flex; flex-direction: row;">
+
+                    <button class="generate-button" onclick="beginGeneration();">GENERATE</button>
+
+                </div>
 
             </div>
 

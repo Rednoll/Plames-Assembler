@@ -46,5 +46,90 @@
 
 .site-module-container > .sub-module-container {
 
+	position: relative;
 	border: 0px solid lightgrey;
+}
+
+.generate-button {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 18;
+	font-weight: 550;
+	color: white;
+	letter-spacing: 0.125em;
+
+	background-color: #BAE1FF;
+	outline-width: 0;
+	border: 4px solid #9EBFD8;
+
+	padding: 7px 12px 5px 12px;
+
+	transition-duration: 0.3s;
+}
+
+.generate-button:hover {
+
+	color: white;
+	background-color: #B0D5F2;
+	border-color: #95B3C9;
+	cursor: pointer; 
+
+	transition-duration: 0.3s;
+}
+
+#modules-steps-area {
+
+	flex-grow: 1;
+	flex-shrink: 1;
+
+	margin: 15px;
+	flex-basis: 40vw;
+}
+
+.compile-console-log-container {
+
+	position: relative;
+	display: block;
+
+	overflow-y: auto;
+
+	padding: 15px;
+}
+
+.compile-console-log {
+
+	position: relative;
+	display: block;
+
+	margin: 0px;
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 16;
+	line-height: 1.5;
+	color: #7892A3;
+
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}
+
+.generation-content-container {
+
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	opacity: 1;
+
+	flex: 3.5;
+	min-height: 0;
+
+	transition: opacity  0.5s, ease;
+}
+
+.generation-content-container.hidden {
+
+	display: none;
+	opacity: 0;
+
+	transition: opacity  0.5s, ease;
 }

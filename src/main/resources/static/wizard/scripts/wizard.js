@@ -71,3 +71,15 @@ async function init() {
         menu.hide(100);
     });
 }
+
+async function beginGeneration() {
+    
+    let settingsContainer = $("#settings-content-container");
+    let generationContainer = $("#generation-content-container");
+
+    settingsContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
+
+        settingsContainer.css("display", "none");
+        generationContainer.removeClass("hidden");
+    });
+}

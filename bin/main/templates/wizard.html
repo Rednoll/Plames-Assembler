@@ -16,52 +16,64 @@
         
         <script src="../resources/wizard/scripts/wizard.js"></script>
 
-        <div class="site-module-container horizontal" style="width: 80vw; height: 45vh; min-height: 300px; max-height: 60vh; padding: 0px;">
+        <div class="site-module-container vertical" style="width: 80vw; height: 65vh; min-height: 300px; max-height: 60vh; padding: 0px;">
 
-            <div style="flex-grow: 1; margin: 15px; flex-basis: 40vw;">
+            <div style="display: flex; flex-direction: row; flex-grow: 3.5;">
 
-                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+                <div style="flex-grow: 1; margin: 15px; flex-basis: 40vw;">
 
-                    <p class="h-main"><span style="color: lightgrey">Step 1. Select </span>Bootloader:</p>
+                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
 
-                    <div id="bootloaders-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+                        <p class="h-main"><span style="color: lightgrey">Step 1. Select </span>Bootloader:</p>
+
+                        <div id="bootloaders-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                    </div>
+
+                    <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
+
+                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+
+                        <p class="h-main"><span style="color: lightgrey">Step 2. Select </span>Core:</p>
+
+                        <div id="cores-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                    </div>
+
+                    <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
+
+                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+
+                        <p class="h-main"><span style="color: lightgrey">Step 3. Add </span>Modules:</p>
+
+                        <div id="modules-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+
+                    </div>
 
                 </div>
 
-                <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
+                <div style="border-left: 1px solid lightgrey"></div>
 
-                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
+                <div style="flex-grow: 4; padding-top: 15px; flex-basis: 60vw;">
 
-                    <p class="h-main"><span style="color: lightgrey">Step 2. Select </span>Core:</p>
+                    <p class="h-main" style="margin-left: 15px;">Modules repository</p>
 
-                    <div id="cores-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+                    <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
 
-                </div>
-
-                <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
-
-                <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
-
-                    <p class="h-main"><span style="color: lightgrey">Step 3. Add </span>Modules:</p>
-
-                    <div id="modules-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
+                    <div id="modules-search" class="sub-module-container plames-modules-search" style="height: 100%; position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
 
                 </div>
 
             </div>
 
-            <div style="border-left: 1px solid lightgrey"></div>
+            <div style="border-bottom: 1px solid lightgrey"></div>
 
-            <div style="flex-grow: 4; padding-top: 15px; flex-basis: 60vw;">
-
-                <p class="h-main" style="margin-left: 15px;">Modules repository</p>
-
-                <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
-
-                <div id="modules-search" class="sub-module-container plames-modules-search" style="height: 100%; position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
+            <div class="sub-module-container" style="padding: 15px; margin-left: 3px; margin-right: 3px; flex-grow: 1;">
+                
+                <p class="h-main"><span style="color: lightgrey">Step 4. Finally</span> Build & Get!</p>
 
             </div>
-        
+
         </div>
 
         <ul class="part-context-menu">
