@@ -86,7 +86,7 @@
 	flex-basis: 40vw;
 }
 
-.compile-console-log-container {
+.compile-log-container {
 
 	position: relative;
 	display: block;
@@ -96,7 +96,7 @@
 	padding: 15px;
 }
 
-.compile-console-log {
+.compile-log {
 
 	position: relative;
 	display: block;
@@ -110,6 +110,13 @@
 
 	overflow-wrap: break-word;
 	word-wrap: break-word;
+}
+
+.compile-log.wait {
+
+	text-align: center;
+	vertical-align: center;
+	color: silver;
 }
 
 .generation-content-container {

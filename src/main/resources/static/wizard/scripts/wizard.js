@@ -1,12 +1,16 @@
 /// <reference path="./plames_part.ts" />
 
+let bootloadersArea = null;
+let coresArea = null;
+let modulesArea = null;
+
 async function init() {
 
     let PlamesPart = await import("./plames_part.js");
 
     let bootloadersList = $("#bootloaders-list");
 
-    let bootloadersArea = new PlamesPart.LabelsArea(bootloadersList, true);
+    bootloadersArea = new PlamesPart.LabelsArea(bootloadersList, true);
 
     $.get("../rest/parts/bootloaders", (data)=> {
 
@@ -15,7 +19,7 @@ async function init() {
 
     let coresList = $("#cores-list");
 
-    let coresArea = new PlamesPart.LabelsArea(coresList, true);
+    coresArea = new PlamesPart.LabelsArea(coresList, true);
 
     $.get("../rest/parts/cores", (data)=> {
 
@@ -24,7 +28,7 @@ async function init() {
 
     let modulesList = $("#modules-list");
 
-    let modulesArea = new PlamesPart.LabelsArea(modulesList, false);
+    modulesArea = new PlamesPart.LabelsArea(modulesList, false);
         modulesArea.setTextOnEmpty("Please add modules from repository!");
 
     $("#modules-search").load("../resources/wizard/htmls/plames_modules_search.html");
@@ -81,5 +85,36 @@ async function beginGeneration() {
 
         settingsContainer.css("display", "none");
         generationContainer.removeClass("hidden");
+
+        $.ajax({
+
+            url: "../ajax/request/create",
+            method: "POST",
+            dataType: "JSON",
+            headers: {
+
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify({
+
+                partBootloader: bootloadersArea.selectedPart,
+                partCore: coresArea.selectedPart,
+                modules: modulesArea.parts
+            })
+
+        }).done(()=> {
+
+            $.ajax({
+
+                url: "../ajax/request/build",
+                method: "GET"
+
+            }).done((placeInQueue)=> {
+
+                $("#compile-log").html("Please wait, place in queue: "+placeInQueue);
+
+                
+            });
+        });
     });
 }

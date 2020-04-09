@@ -1,7 +1,5 @@
 package com.inwaiders.plames;
 
-import java.io.File;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -15,9 +13,7 @@ public class PlamesAssembler {
 	public static void main(String[] args) {
 		
 		SpringApplication.run(PlamesAssembler.class, args);
-		
-		File testFolder = new File("./test");
-		
+			
 		/*
 		Logger logger = (Logger) LoggerFactory.getLogger("PlamesAssembler");
 		

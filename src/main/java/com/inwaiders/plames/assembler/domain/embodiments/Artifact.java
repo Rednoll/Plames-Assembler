@@ -3,7 +3,7 @@ package com.inwaiders.plames.assembler.domain.embodiments;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.inwaiders.plames.assembler.domain.CompileRequest;
+import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
 
 @Entity(name = "Artifact")

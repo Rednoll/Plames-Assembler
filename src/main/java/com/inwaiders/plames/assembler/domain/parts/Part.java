@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.inwaiders.plames.assembler.dao.parts.PartRepository;
-import com.inwaiders.plames.assembler.domain.CompileRequest;
+import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 import com.inwaiders.plames.assembler.domain.embodiments.Embodiment;
 import com.inwaiders.plames.assembler.dto.parts.PartDto;
 import com.inwaiders.plames.eco.domain.user.User;
@@ -54,9 +54,7 @@ public abstract class Part {
 		
 		this.name = dto.name;
 		this.embodiment = Embodiment.findById(dto.embodiment.id);
-		this.embodiment.loadFromDto(dto.embodiment);
 		this.owner = User.findById(dto.owner.id);
-		this.owner.loadFromDto(dto.owner);
 		this.icon = dto.icon;
 		this.description = dto.description;
 	}

@@ -11,10 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.inwaiders.plames.assembler.dao.embodiments.EmbodimentRepository;
-import com.inwaiders.plames.assembler.domain.CompileRequest;
+import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 import com.inwaiders.plames.assembler.domain.providers.Provider;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
 import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
+import com.inwaiders.plames.assembler.dto.providers.ProviderBaseDto;
 
 @Entity(name = "Embodiment")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -40,7 +41,7 @@ public abstract class Embodiment<ProviderType extends Provider, DTO extends Embo
 	public void loadFromDto(DTO dto) {
 		
 		this.name = dto.name;
-		this.provider.loadFromDto(dto.provider);
+		this.provider = (ProviderType) ProviderBase.findById(((ProviderBaseDto) dto.provider).id);
 	}
 	
 	public abstract DTO toDto();

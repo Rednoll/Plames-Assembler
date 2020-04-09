@@ -41,7 +41,7 @@ public abstract class ProviderBase<DTO extends ProviderBaseDto> implements Provi
 		repository.save(this);
 	}
 	
-	public ProviderBase findById(Long id) {
+	public static ProviderBase findById(Long id) {
 		
 		return repository.getOne(id);
 	}

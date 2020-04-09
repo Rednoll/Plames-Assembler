@@ -1,4 +1,4 @@
-package com.inwaiders.plames.assembler.domain;
+package com.inwaiders.plames.assembler.domain.compile;
 
 import java.util.Set;
 
@@ -75,6 +75,11 @@ public class CompileReport {
 	public Long getId() {
 		
 		return this.id;
+	}
+	
+	public void save() {
+		
+		repository.save(this);
 	}
 	
 	public static CompileReport create() {

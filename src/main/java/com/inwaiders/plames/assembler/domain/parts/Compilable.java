@@ -1,6 +1,6 @@
 package com.inwaiders.plames.assembler.domain.parts;
 
-import com.inwaiders.plames.assembler.domain.CompileRequest;
+import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 
 public interface Compilable {
 

@@ -2,7 +2,7 @@ package com.inwaiders.plames.assembler.dao.report;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.inwaiders.plames.assembler.domain.CompileReport;
+import com.inwaiders.plames.assembler.domain.compile.CompileReport;
 
 public interface CompileReportRepository extends JpaRepository<CompileReport, Long>{
 
