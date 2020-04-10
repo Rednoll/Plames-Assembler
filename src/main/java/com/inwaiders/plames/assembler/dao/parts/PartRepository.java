@@ -8,5 +8,5 @@ import com.inwaiders.plames.assembler.domain.parts.Part;
 @Repository
 public interface PartRepository<T extends Part, ID extends Long> extends JpaRepository<T, ID>{
 
-	public Part findByName(String name);
+	public T findByName(String name);
 }

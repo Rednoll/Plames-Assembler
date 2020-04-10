@@ -106,11 +106,11 @@ public class CompileTest {
 		
 		core.save();
 		
-		File testFolder = new File("./test");
+		File testFolder = new File("./factory/test");
 		
-		CompileRequest request = new CompileRequest((Logger) LoggerFactory.getLogger("PlamesAssembler"), testFolder, new File("./common-prototype"));
-			request.setPartBootloader((PartBootloader) PartBootloader.findByName("Plames Bootloader"));
-			request.setPartCore((PartCore) PartBootloader.findByName("Plames Core"));
+		CompileRequest request = new CompileRequest((Logger) LoggerFactory.getLogger("PlamesAssembler"), testFolder, new File("./factory/common-prototype"));
+			request.setBootloader((PartBootloader) PartBootloader.findByName("Plames Bootloader"));
+			request.setCore((PartCore) PartBootloader.findByName("Plames Core"));
 			
 			request.addModule((PartModule) PartModule.findByName("Plames API"));
 		

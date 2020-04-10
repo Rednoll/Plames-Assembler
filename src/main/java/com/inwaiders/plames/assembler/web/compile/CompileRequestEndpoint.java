@@ -1,11 +1,11 @@
 package com.inwaiders.plames.assembler.web.compile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 import com.inwaiders.plames.assembler.domain.compile.CompileRequestProcessor;
@@ -27,23 +28,40 @@ import com.inwaiders.plames.assembler.web.WebCompileLogAppender;
 @SessionAttributes("request")
 public class CompileRequestEndpoint {
 	
-	@Autowired
-	private ApplicationContext context;
+	private static Map<String, CompileRequest> requests = new HashMap<>();
 	
 	@PostMapping("/create")
-	public void create(@RequestBody CompileRequestDto requestDto, HttpSession session) {
+	public ResponseEntity<Boolean> create(@RequestBody CompileRequestDto requestDto, HttpSession session) {
 		
-		CompileRequest request = context.getBean(CompileRequest.class);
+		String sessionId = session.getId();
+		
+		if(requests.get(sessionId) != null) {
+			
+			CompileRequest oldReqeust = requests.get(sessionId);
+			
+			if(oldReqeust.isBuilded()) {
+				
+				requests.remove(sessionId);
+			}
+			else {
+				
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
+			}
+		}
+		
+		CompileRequest request = CompileRequestProcessor.createRequest();
 		
 		request.loadFromDto(requestDto);
-	
-		session.setAttribute("request", request);
+		
+		requests.put(sessionId, request);
+
+		return ResponseEntity.ok().body(true);
 	}
 	
 	@GetMapping("/build")
 	public ResponseEntity<Integer> build(HttpSession session) {
 		
-		CompileRequest request = (CompileRequest) session.getAttribute("request");
+		CompileRequest request = requests.get(session.getId());
 		
 		if(request == null) return ResponseEntity.notFound().build();
 		
@@ -51,22 +69,38 @@ public class CompileRequestEndpoint {
 	
 		return new ResponseEntity<Integer>(placeInQueue, HttpStatus.OK);
 	}
-
+	
+	@GetMapping("/wait")
+	public DeferredResult<ResponseEntity<Boolean>> waitComplete(HttpSession session) {
+	
+		CompileRequest request = requests.get(session.getId());
+		
+		DeferredResult<ResponseEntity<Boolean>> result = new DeferredResult<ResponseEntity<Boolean>>();
+		
+		if(request == null) {
+			
+			result.setResult(ResponseEntity.notFound().build());
+			return result;
+		}
+	
+		return result;
+	}
+	
 	@GetMapping("/status")
 	public ResponseEntity<CompileRequest.Status> status(HttpSession session) {
 		
-		CompileRequest request = (CompileRequest) session.getAttribute("request");
+		CompileRequest request = requests.get(session.getId());
 		
 		if(request == null) return ResponseEntity.notFound().build();
 		
 		return new ResponseEntity<CompileRequest.Status>(request.getStatus(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/console_log_news")
-	public ResponseEntity<List<String>> consoleLog(HttpSession session) {
+	@GetMapping("/compile_log_news")
+	public ResponseEntity<List<String>> compileLog(HttpSession session) {
 		
-		CompileRequest request = (CompileRequest) session.getAttribute("request");
-		
+		CompileRequest request = requests.get(session.getId());
+
 		if(request == null) return ResponseEntity.notFound().build();
 		
 		WebCompileLogAppender appender = (WebCompileLogAppender) request.getLogger().getAppender("web");

@@ -3,12 +3,16 @@ package com.inwaiders.plames.assembler.domain.parts;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.inwaiders.plames.assembler.dao.parts.PartBootloaderRepository;
+import com.inwaiders.plames.assembler.dao.parts.PartCoreRepository;
 import com.inwaiders.plames.assembler.dto.parts.PartCoreDto;
 
 @Entity(name = "PartCore")
 @Table(name = "part_cores")
 public class PartCore extends Part {
 
+	private static PartCoreRepository repository;
+	
 	public void loadFromDto(PartCoreDto dto) {
 		super.loadFromDto(dto);
 	}
@@ -26,6 +30,11 @@ public class PartCore extends Part {
 		
 	}
 	
+	public static PartCore findById(Long id) {
+		
+		return repository.getOne(id);
+	}
+	
 	public static PartCore create() {
 		
 		PartCore part = new PartCore();
@@ -33,5 +42,10 @@ public class PartCore extends Part {
 		part = repository.save(part);
 		
 		return part;
+	}
+	
+	public static void setRepository(PartCoreRepository rep) {
+		
+		repository = rep;
 	}
 }

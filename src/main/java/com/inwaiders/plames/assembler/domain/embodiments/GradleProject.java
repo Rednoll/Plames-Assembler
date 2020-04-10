@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
 import com.inwaiders.plames.assembler.domain.parts.Compilable;
 import com.inwaiders.plames.assembler.domain.parts.HasSettingsLine;

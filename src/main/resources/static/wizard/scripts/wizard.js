@@ -4,6 +4,8 @@ let bootloadersArea = null;
 let coresArea = null;
 let modulesArea = null;
 
+let loadCompileLogInterval = null;
+
 async function init() {
 
     let PlamesPart = await import("./plames_part.js");
@@ -81,40 +83,88 @@ async function beginGeneration() {
     let settingsContainer = $("#settings-content-container");
     let generationContainer = $("#generation-content-container");
 
-    settingsContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
+    $.ajax({
 
-        settingsContainer.css("display", "none");
-        generationContainer.removeClass("hidden");
+        url: "../ajax/request/create",
+        method: "POST",
+        headers: {
 
-        $.ajax({
+            "Content-Type": "application/json"
+        },
+        data: JSON.stringify({
 
-            url: "../ajax/request/create",
-            method: "POST",
-            dataType: "JSON",
-            headers: {
+            bootloader: bootloadersArea.selectedPart,
+            core: coresArea.selectedPart,
+            modules: modulesArea.parts
+        })
+    })
+    .done((data)=> {
 
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify({
+        settingsContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
 
-                partBootloader: bootloadersArea.selectedPart,
-                partCore: coresArea.selectedPart,
-                modules: modulesArea.parts
-            })
-
-        }).done(()=> {
+            settingsContainer.css("display", "none");
+            generationContainer.removeClass("hidden");
 
             $.ajax({
 
                 url: "../ajax/request/build",
                 method: "GET"
-
-            }).done((placeInQueue)=> {
+            })
+            .done((placeInQueue)=> {
 
                 $("#compile-log").html("Please wait, place in queue: "+placeInQueue);
-
                 
+                loadCompileLogInterval = setInterval(loadCompileLog, 750);
+
+                $.ajax({
+
+                    url: "../ajax/request/wait",
+                    method: "GET"
+                })
+                .done(()=> {
+
+                    clearInterval(loadCompileLogInterval);
+                });
             });
+
         });
+    })
+    .fail((jqXHR)=> {
+
+        if(jqXHR.status == 409) {
+
+            alert("Compile process already running!");
+        }
+    });
+}
+
+function loadCompileLog() {
+
+    $.ajax({
+
+        url: "../ajax/request/compile_log_news",
+        method: "GET",
+        async: false
+    })
+    .done((news)=> {
+
+        let jsLogContainer = document.getElementById("compile-log-container");
+        let log = $("#compile-log");
+
+        if(log.hasClass("wait")) {
+
+            log.removeClass("wait");
+            log.html("");
+        }
+
+        for(let index in news) {
+
+            let line = news[index];
+
+            log.html(log.html()+line+"</br>");
+
+        }
+        
+        $(jsLogContainer).stop().animate({scrollTop: jsLogContainer.scrollHeight}, 250);
     });
 }

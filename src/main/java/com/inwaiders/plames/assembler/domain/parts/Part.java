@@ -22,7 +22,7 @@ import com.inwaiders.plames.eco.domain.user.User;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Part {
 
-	protected static PartRepository<Part, Long> repository;
+	private static PartRepository<Part, Long> repository;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -46,7 +46,7 @@ public abstract class Part {
 	private String icon = null;
 	
 	public void load(CompileRequest request) throws Exception {
-		
+
 		embodiment.load(request);
 	}
 	

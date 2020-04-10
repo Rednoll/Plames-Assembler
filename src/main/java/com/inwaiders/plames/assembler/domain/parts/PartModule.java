@@ -3,12 +3,15 @@ package com.inwaiders.plames.assembler.domain.parts;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.inwaiders.plames.assembler.dao.parts.PartModuleRepository;
 import com.inwaiders.plames.assembler.dto.parts.PartModuleDto;
 
 @Entity(name = "PartModule")
 @Table(name = "part_modules")
 public class PartModule extends Part {
 
+	private static PartModuleRepository repository;
+	
 	public void loadFromDto(PartModuleDto dto) {
 		super.loadFromDto(dto);
 	}
@@ -26,6 +29,16 @@ public class PartModule extends Part {
 		
 	}
 	
+	public static PartModule findByName(String name) {
+		
+		return repository.findByName(name);
+	}
+	
+	public static PartModule findById(Long id) {
+		
+		return repository.getOne(id);
+	}
+	
 	public static PartModule create() {
 		
 		PartModule part = new PartModule();
@@ -33,5 +46,10 @@ public class PartModule extends Part {
 		part = repository.save(part);
 		
 		return part;
+	}
+	
+	public static void setRepository(PartModuleRepository rep) {
+		
+		repository = rep;
 	}
 }

@@ -7,19 +7,19 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.Hibernate;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inwaiders.plames.PlamesAssembler;
 import com.inwaiders.plames.assembler.domain.parts.PartBootloader;
@@ -44,23 +44,28 @@ public class CompileRequest {
 	private Long id = null;
 	
 	private Logger logger = null;
-	
-	private PartBootloader partBootloader = null;
-	private PartCore partCore = null;
-	private List<PartModule> modules = new ArrayList<>();
+
+	private PartModule api = null;
+	private PartBootloader bootloader = null;
+	private PartCore core = null;
+	private Set<PartModule> modules = new HashSet<>();
 
 	private String gradleBuildPattern = null;
 	private String gradleSettingsPattern = null;
 	
 	private File projectPattern = null;
 	
-	private File rootFolder = null;
+	private File rootDir = null;
 	
 	private Status status = Status.NEW;
+	
+	private boolean builded = false;
 	
 	public CompileRequest() {
 		
 		this.id = idGen.getAndIncrement();
+		
+		this.api = PartModule.findByName("Plames API");
 	}
 	
 	public CompileRequest(Logger logger, File rootFolder, File projectPattern) {
@@ -68,52 +73,99 @@ public class CompileRequest {
 		
 		this.logger = logger;
 		this.projectPattern = projectPattern;
-		this.rootFolder = rootFolder;
+		this.rootDir = rootFolder;
 	
 		logger.addAppender(new RamLogAppenger(logger.getLoggerContext(), "ram"));
 		logger.addAppender(new WebCompileLogAppender(logger.getLoggerContext(), "web"));
 	}
 	
+	public CompileRequestDto toDto() {
+		
+		CompileRequestDto dto = new CompileRequestDto();
+			dto.bootloader = this.bootloader.toDto();
+			dto.core = this.core.toDto();
+			dto.modules = this.modules.stream().map(PartModule::toDto).collect(Collectors.toList());
+			
+		return dto;
+	}
+	
 	public void loadFromDto(CompileRequestDto dto) {
 		
-		this.partBootloader = (PartBootloader) Hibernate.unproxy(PartBootloader.findById(dto.partBootloader.id));	
-		this.partCore = (PartCore) Hibernate.unproxy(PartBootloader.findById(dto.partCore.id));
+		this.bootloader = PartBootloader.findById(dto.bootloader.id);	
+		this.core = PartCore.findById(dto.core.id);
 	
 		this.modules.clear();
 	
 		for(PartModuleDto moduleDto : dto.modules) {
 			
-			PartModule module = (PartModule) Hibernate.unproxy(PartModule.findById(moduleDto.id));
+			PartModule module = PartModule.findById(moduleDto.id);
 			
 			this.modules.add(module);
 		}
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void reinitHibernateProxies() {
+		
+		logger.info("Re-init hibernate proxies...");
+		
+		this.api = PartModule.findById(this.api.getId());
+		this.bootloader = PartBootloader.findById(this.bootloader.getId());
+		this.core = PartCore.findById(this.core.getId());
+		
+		Set<PartModule> newModules = new HashSet<>();
+		
+			for(PartModule module : this.modules) {
+				
+				newModules.add(PartModule.findById(module.getId()));
+			}
+
+		this.modules = newModules;
+			
+		logger.info("Re-init complete.");
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
 	public CompileReport build() throws Exception {
 		
-		this.status = Status.BUILDING;
-		
-		long start = System.currentTimeMillis();
-		
-		logger.info("Begin build...");
-		
-		create();
-		load();
-		boolean compileResult = compile();
-		
-		long end = System.currentTimeMillis();
-		
-		if(compileResult) {
+		try {
 			
-			this.status = Status.COMPLETE;
+			this.status = Status.BUILDING;
+			
+			long start = System.currentTimeMillis();
+			
+			logger.info("Begin build...");
+			
+			reinitHibernateProxies();
+			
+			create();
+			load();
+			boolean compileResult = compile();
+			
+			FileUtils.deleteDirectory(rootDir);
+			
+			long end = System.currentTimeMillis();
+			
+			if(compileResult) {
+				
+				this.status = Status.SUCCESS;
+			}
+			else {
+				
+				this.status = Status.FAIL;
+			}
+			
+			logger.info("Build complete in "+new DecimalFormat("##.00").format((end-start)/1000D)+" s");
+		
+			this.builded = true;
 		}
-		else {
-			
+		catch(Exception e) {
+		
+			this.builded = true;
 			this.status = Status.FAIL;
+			throw e;
 		}
 		
-		logger.info("Build complete in "+new DecimalFormat("##.00").format((end-start)/1000D)+" s");
-	
 		CompileReport report = createReport();
 	
 		return report;
@@ -121,22 +173,22 @@ public class CompileRequest {
 	
 	public void create() throws IOException {
 		
-		FileUtils.deleteDirectory(rootFolder);
+		FileUtils.deleteDirectory(rootDir);
 		
 		logger.info("Start copy project pattern...");
 		
-		FileUtils.copyDirectory(projectPattern, rootFolder);
+		FileUtils.copyDirectory(projectPattern, rootDir);
 		
 		logger.info("Copy complete");
 		
-		File buildGradleFile = new File(rootFolder, "build.gradle");
+		File buildGradleFile = new File(rootDir, "build.gradle");
 		
 		if(gradleBuildPattern == null && buildGradleFile.exists()) {
 			
 			gradleBuildPattern = new String(Files.readAllBytes(buildGradleFile.toPath()));
 		}
 		
-		File settingsGradleFile = new File(rootFolder, "settings.gradle");
+		File settingsGradleFile = new File(rootDir, "settings.gradle");
 		
 		if(gradleSettingsPattern == null && settingsGradleFile.exists()) {
 			
@@ -152,15 +204,18 @@ public class CompileRequest {
 		logger.info("Project creation complete!");
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void load() throws Exception {
 		
 		loadParts();
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void loadParts() throws Exception {
 		
-		partBootloader.load(this);
-		partCore.load(this);
+		api.load(this);
+		bootloader.load(this);
+		core.load(this);
 		
 		if(PlamesAssembler.CONFIG.providersAsyncLoading) {
 			
@@ -199,8 +254,9 @@ public class CompileRequest {
 	
 	public boolean compile() throws Exception {
 		
-		partBootloader.prepareToCompile(this);
-		partCore.prepareToCompile(this);
+		api.prepareToCompile(this);
+		bootloader.prepareToCompile(this);
+		core.prepareToCompile(this);
 		
 		for(PartModule module : modules) {
 			
@@ -208,7 +264,7 @@ public class CompileRequest {
 		}
 		
 		Process gradleProcess = new ProcessBuilder("cmd", "/c", "gradlew", "bootJar")
-			.directory(rootFolder)
+			.directory(rootDir)
 		.start();
 		
 		Logger gradleLogger = (Logger) LoggerFactory.getLogger("Gradle");
@@ -245,9 +301,12 @@ public class CompileRequest {
 		
 		CompileReport report = CompileReport.create();
 			report.setLog(((RamLogAppenger) logger.getAppender("ram")).getLog());
-			report.setParts(new HashSet<>(this.modules));
+			report.setModules(new HashSet<>(this.modules));
 			report.setGradleBuildPattern(this.gradleBuildPattern);	
 			report.setGradleSettingsPattern(this.gradleSettingsPattern);
+			report.setBootloader(this.bootloader);
+			report.setCore(this.core);
+			report.setResultStatus(this.status);
 			
 		report.save();
 			
@@ -258,7 +317,7 @@ public class CompileRequest {
 	
 	public void writeGradleBuild(String gradleBuildData) throws IOException {
 		
-		File gradleBuild = new File(rootFolder, "build.gradle");
+		File gradleBuild = new File(rootDir, "build.gradle");
 		
 		logger.info("Write gradle build...");
 		
@@ -269,7 +328,7 @@ public class CompileRequest {
 	
 	public void writeGradleSettings(String gradleSettingsData) throws IOException {
 		
-		File gradleSettings = new File(rootFolder, "settings.gradle");
+		File gradleSettings = new File(rootDir, "settings.gradle");
 	
 		logger.info("Write gradle settings...");
 		
@@ -282,8 +341,8 @@ public class CompileRequest {
 		
 		StringBuilder compiledDependencies = new StringBuilder();
 		
-			compiledDependencies.append(partBootloader.getGradleDependencyLine()+"\n");
-			compiledDependencies.append(partCore.getGradleDependencyLine()+"\n");
+			compiledDependencies.append(bootloader.getGradleDependencyLine()+"\n");
+			compiledDependencies.append(core.getGradleDependencyLine()+"\n");
 			
 			for(PartModule module : modules) {
 				
@@ -299,14 +358,21 @@ public class CompileRequest {
 		
 		StringBuilder compiledSettings = new StringBuilder();
 		
-		String settignsLine = partBootloader.getSettingsLine();
+		String settignsLine = api.getSettingsLine();
 		
 		if(settignsLine != null && !settignsLine.isEmpty()) {
 			
 			compiledSettings.append(settignsLine+"\n");
 		}
 		
-		settignsLine = partCore.getSettingsLine();
+		settignsLine = bootloader.getSettingsLine();
+		
+		if(settignsLine != null && !settignsLine.isEmpty()) {
+			
+			compiledSettings.append(settignsLine+"\n");
+		}
+		
+		settignsLine = core.getSettingsLine();
 			
 		if(settignsLine != null && !settignsLine.isEmpty()) {
 			
@@ -328,24 +394,39 @@ public class CompileRequest {
 		return compilePattern;
 	}
 	
-	public void setPartCore(PartCore core) {
+	public boolean isBuilded() {
 		
-		this.partCore = core;
+		return this.builded;
 	}
 	
-	public PartCore getPartCore() {
+	public void setRootDir(File dir) {
 		
-		return this.partCore;
+		this.rootDir = dir; 
+	}
+	
+	public void setProjectPattern(File pattern) {
+		
+		this.projectPattern = pattern;
+	}
+	
+	public void setCore(PartCore core) {
+		
+		this.core = core;
+	}
+	
+	public PartCore getCore() {
+		
+		return this.core;
 	}
 
-	public void setPartBootloader(PartBootloader boot) {
-		
-		this.partBootloader = boot;
+	public void setBootloader(PartBootloader boot) {
+
+		this.bootloader = boot;
 	}
 	
-	public PartBootloader getPartBootloader() {
+	public PartBootloader getBootloader() {
 		
-		return this.partBootloader;
+		return this.bootloader;
 	}
 	
 	public void addModule(PartModule module) {
@@ -355,7 +436,15 @@ public class CompileRequest {
 	
 	public File getRootFolder() {
 		
-		return this.rootFolder;
+		return this.rootDir;
+	}
+	
+	public void setLogger(Logger logger) {
+		
+		logger.addAppender(new RamLogAppenger(logger.getLoggerContext(), "ram"));
+		logger.addAppender(new WebCompileLogAppender(logger.getLoggerContext(), "web"));
+		
+		this.logger = logger;
 	}
 	
 	public Logger getLogger() {
@@ -375,6 +464,6 @@ public class CompileRequest {
 	
 	public static enum Status {
 		
-		NEW, BUILDING, COMPLETE, FAIL;
+		NEW, BUILDING, SUCCESS, FAIL;
 	}
 }

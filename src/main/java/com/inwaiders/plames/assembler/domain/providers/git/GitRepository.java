@@ -67,7 +67,7 @@ public class GitRepository extends ProviderBase<GitRepositoryDto> implements Src
 	
 	@Override
 	public void load(CompileRequest request, File destination) throws Exception {
-	
+
 		Logger logger = (Logger) LoggerFactory.getLogger("Git");
 		
 		LoggerUtils.setRoot(logger, request.getLogger());
@@ -93,7 +93,9 @@ public class GitRepository extends ProviderBase<GitRepositoryDto> implements Src
 		logger.info("Start clone("+Thread.currentThread().getId()+") repository "+address+"...");
 		
 		Git git = cloneCommand.call();
-	
+		
+		git.close();
+		
 		logger.info("Clone("+Thread.currentThread().getId()+") complete!");
 	}
 	

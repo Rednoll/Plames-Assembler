@@ -11,7 +11,7 @@ public class CompileRequestDto {
 	
 	public Long id = null;
 	
-	public PartBootloaderDto partBootloader = null;
-	public PartCoreDto partCore = null;
+	public PartBootloaderDto bootloader = null;
+	public PartCoreDto core = null;
 	public List<PartModuleDto> modules = new ArrayList<>();
 }

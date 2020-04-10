@@ -2,6 +2,7 @@ package com.inwaiders.plames;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 import com.inwaiders.plames.assembler.MainConfig;
 
@@ -10,10 +11,12 @@ public class PlamesAssembler {
 
 	public static MainConfig CONFIG = null;
 	
+	public static ApplicationContext CONTEXT = null;
+	
 	public static void main(String[] args) {
 		
-		SpringApplication.run(PlamesAssembler.class, args);
-			
+		CONTEXT = SpringApplication.run(PlamesAssembler.class, args);
+		
 		/*
 		Logger logger = (Logger) LoggerFactory.getLogger("PlamesAssembler");
 		
