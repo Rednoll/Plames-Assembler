@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.inwaiders.plames.assembler.dao.embodiments.EmbodimentRepository;
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.providers.Provider;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
 import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
@@ -34,7 +34,7 @@ public abstract class Embodiment<ProviderType extends Provider, DTO extends Embo
 	@OneToOne(targetEntity = ProviderBase.class)
 	protected ProviderType provider;
 	
-	public abstract void load(CompileRequest request) throws Exception;
+	public abstract void load(BuildRequest request) throws Exception;
 	
 	public abstract String getGradleDependencyLine();
 	

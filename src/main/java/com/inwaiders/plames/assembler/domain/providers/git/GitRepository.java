@@ -12,7 +12,7 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.LoggerFactory;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.providers.ProviderBase;
 import com.inwaiders.plames.assembler.domain.providers.SrcProvider;
 import com.inwaiders.plames.assembler.dto.providers.git.GitRepositoryDto;
@@ -66,7 +66,7 @@ public class GitRepository extends ProviderBase<GitRepositoryDto> implements Src
 	}
 	
 	@Override
-	public void load(CompileRequest request, File destination) throws Exception {
+	public void load(BuildRequest request, File destination) throws Exception {
 
 		Logger logger = (Logger) LoggerFactory.getLogger("Git");
 		

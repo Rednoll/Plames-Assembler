@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.parts.Compilable;
 import com.inwaiders.plames.assembler.domain.parts.HasSettingsLine;
 import com.inwaiders.plames.assembler.domain.providers.SrcProvider;
@@ -23,7 +23,7 @@ import ch.qos.logback.classic.Logger;
 @Table(name = "gradle_projects")
 public class GradleProject extends Embodiment<SrcProvider<?>, GradleProjectDto> implements HasSettingsLine, Compilable {
 
-	public void load(CompileRequest request) throws Exception {
+	public void load(BuildRequest request) throws Exception {
 	
 		File rootFolder = request.getRootFolder();
 		
@@ -33,12 +33,12 @@ public class GradleProject extends Embodiment<SrcProvider<?>, GradleProjectDto> 
 	}
 	
 	@Override
-	public void prepareToCompile(CompileRequest request) throws Exception {
+	public void prepareToCompile(BuildRequest request) throws Exception {
 		
 		useDeployGradleFileIfExist(request);
 	}
 	
-	public void useDeployGradleFileIfExist(CompileRequest request) throws IOException {
+	public void useDeployGradleFileIfExist(BuildRequest request) throws IOException {
 		
 		Logger logger = request.getLogger();
 		

@@ -4,7 +4,7 @@ let bootloadersArea = null;
 let coresArea = null;
 let modulesArea = null;
 
-let loadCompileLogInterval = null;
+let loadBuildLogInterval = null;
 
 async function init() {
 
@@ -112,19 +112,16 @@ async function beginGeneration() {
             })
             .done((placeInQueue)=> {
 
-                $("#compile-log").html("Please wait, place in queue: "+placeInQueue);
+                $("#build-log").html("Please wait, place in queue: "+placeInQueue);
                 
-                loadCompileLogInterval = setInterval(loadCompileLog, 750);
+                if(placeInQueue <= 0) {
+                    
+                    startLoadBuildLog();  
+                }
+                else {
 
-                $.ajax({
-
-                    url: "../ajax/request/wait",
-                    method: "GET"
-                })
-                .done(()=> {
-
-                    clearInterval(loadCompileLogInterval);
-                });
+                    waitQueue();
+                }
             });
 
         });
@@ -138,18 +135,60 @@ async function beginGeneration() {
     });
 }
 
-function loadCompileLog() {
+function waitQueue() {
 
     $.ajax({
 
-        url: "../ajax/request/compile_log_news",
+        url: "../ajax/request/place_in_queue",
+        method: "GET",
+        async: true
+    })
+    .done((data)=> {
+
+        if(data.placeInQueue > 0) {
+
+            $("#build-log").html("Please wait, place in queue: "+data.placeInQueue+"</br>(estimated waiting time: "+data.estimatedWaitingTime.toFixed(2)+"s)");
+            
+            setTimeout(waitQueue, 2000);
+        }
+        else {
+
+            startLoadBuildLog();
+        }
+    });
+}
+
+function startLoadBuildLog(){
+
+    loadBuildLogInterval = setInterval(loadBuildLog, 750, 5);
+
+    $.ajax({
+
+        url: "../ajax/request/wait_build_end",
+        method: "GET",
+        timeout: 3600000,
+        async: true
+    })
+    .done(()=> {
+
+        clearInterval(loadBuildLogInterval);
+
+        loadBuildLog(-1);
+    });
+}
+
+function loadBuildLog(linesCount) {
+
+    $.ajax({
+
+        url: "../ajax/request/build_log_news?linesCount="+linesCount,
         method: "GET",
         async: false
     })
     .done((news)=> {
 
-        let jsLogContainer = document.getElementById("compile-log-container");
-        let log = $("#compile-log");
+        let jsLogContainer = document.getElementById("build-log-container");
+        let log = $("#build-log");
 
         if(log.hasClass("wait")) {
 

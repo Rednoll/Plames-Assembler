@@ -11,6 +11,7 @@ export class LabelsArea {
 
         this.jquery = jquery;
         this.partLabels = new Array();
+        this.parts = new Array();
         this.selectable = selectable
 
         $.ajax({
@@ -27,6 +28,8 @@ export class LabelsArea {
     }
 
     loadFromJson(jsonArray) {
+
+        this.parts = new Array();
 
         for(let index in jsonArray) {
 
@@ -61,6 +64,11 @@ export class LabelsArea {
 
     createLabel(part) {
 
+        if(!(part instanceof Part)) {
+
+            part = Part.createFromJson(part);
+        }
+
         this.hideEmpty();
         
         let jqueryLabel = this.jquery.find(".prototype").first().clone()
@@ -70,6 +78,7 @@ export class LabelsArea {
 
         jqueryLabel.appendTo(this.jquery);
 
+        this.parts.push(part);
         this.partLabels.push(partLabel);
 
         return partLabel;
@@ -97,6 +106,7 @@ export class LabelsArea {
             partLabel = this.getLabel(partLabel);
         }
 
+        this.parts.splice(this.parts.indexOf(partLabel.part), 1);
         this.partLabels.splice(this.partLabels.indexOf(partLabel), 1);
         
         partLabel.dispose();

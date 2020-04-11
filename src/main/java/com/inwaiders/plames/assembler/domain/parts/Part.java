@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.inwaiders.plames.assembler.dao.parts.PartRepository;
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.embodiments.Embodiment;
 import com.inwaiders.plames.assembler.dto.parts.PartDto;
 import com.inwaiders.plames.eco.domain.user.User;
@@ -45,7 +45,7 @@ public abstract class Part {
 	@Column(name = "icon", length = 1024)
 	private String icon = null;
 	
-	public void load(CompileRequest request) throws Exception {
+	public void load(BuildRequest request) throws Exception {
 
 		embodiment.load(request);
 	}
@@ -77,7 +77,7 @@ public abstract class Part {
 		dto.description = this.getDescription();
 	}
 	
-	public void prepareToCompile(CompileRequest request) {
+	public void prepareToCompile(BuildRequest request) {
 		
 		if(embodiment instanceof Compilable) {
 			

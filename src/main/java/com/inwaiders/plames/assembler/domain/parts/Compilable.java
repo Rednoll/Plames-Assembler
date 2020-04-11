@@ -1,8 +1,8 @@
 package com.inwaiders.plames.assembler.domain.parts;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 
 public interface Compilable {
 
-	public void prepareToCompile(CompileRequest request) throws Exception;
+	public void prepareToCompile(BuildRequest request) throws Exception;
 }

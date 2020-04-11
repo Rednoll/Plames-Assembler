@@ -5,17 +5,17 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileReport;
+import com.inwaiders.plames.assembler.domain.build.BuildReport;
 
 @Service
-public class CompileReportRepositoryInjector {
+public class BuildReportRepositoryInjector {
 
 	@Autowired
-	private CompileReportRepository repository;
+	private BuildReportRepository repository;
 
 	@PostConstruct
 	private void inject() {
 		
-		CompileReport.setRepository(repository);
+		BuildReport.setRepository(repository);
 	}
 }

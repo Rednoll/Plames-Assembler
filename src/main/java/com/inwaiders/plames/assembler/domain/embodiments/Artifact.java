@@ -3,7 +3,7 @@ package com.inwaiders.plames.assembler.domain.embodiments;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
 
 @Entity(name = "Artifact")
@@ -11,7 +11,7 @@ import com.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
 public class Artifact extends Embodiment {
 
 	@Override
-	public void load(CompileRequest request) throws Exception {
+	public void load(BuildRequest request) throws Exception {
 		
 	}
 	

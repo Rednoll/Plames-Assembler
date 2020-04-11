@@ -37,6 +37,11 @@ public class WebCompileLogAppender extends AppenderBase<ILoggingEvent> {
 	
 		List<String> linkedList = new LinkedList<>();
 	
+		if(count == -1) {
+			
+			count = lines.size();
+		}
+		
 		for(int i = 0; i < count && lines.size() > 0; i++) {
 			
 			linkedList.add(lines.poll());

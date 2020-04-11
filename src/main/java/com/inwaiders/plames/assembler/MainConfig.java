@@ -8,26 +8,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
-import com.inwaiders.plames.assembler.domain.compile.CompileRequestProcessor;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequestProcessor;
 
 @Configuration
 @PropertySource("file:main.properties")
 public class MainConfig {
 	
-	@Value("${compile.threads}")
-	public int compileThreadsCount;
+	@Value("${build.threads}")
+	public int buildThreadsCount;
 
-	@Value("${compile.providers.async_loading}")
+	@Value("${build.providers.async_loading}")
 	public boolean providersAsyncLoading;
 	
-	@Value("${compile.providers.loaders}")
+	@Value("${build.providers.loaders}")
 	public int providersLoadersCount;
 	
 	@PostConstruct
 	private void post() {
 		
-		CompileRequest.providersLoadService = Executors.newFixedThreadPool(providersLoadersCount);
-		CompileRequestProcessor.initCompileService(this.compileThreadsCount);
+		BuildRequest.providersLoadService = Executors.newFixedThreadPool(providersLoadersCount);
+		BuildRequestProcessor.initCompileService(this.buildThreadsCount);
 	}
 }

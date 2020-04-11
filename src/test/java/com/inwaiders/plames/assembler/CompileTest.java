@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inwaiders.plames.assembler.domain.compile.CompileRequest;
+import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.embodiments.GradleProject;
 import com.inwaiders.plames.assembler.domain.parts.Part;
 import com.inwaiders.plames.assembler.domain.parts.PartBootloader;
@@ -108,7 +108,7 @@ public class CompileTest {
 		
 		File testFolder = new File("./factory/test");
 		
-		CompileRequest request = new CompileRequest((Logger) LoggerFactory.getLogger("PlamesAssembler"), testFolder, new File("./factory/common-prototype"));
+		BuildRequest request = new BuildRequest((Logger) LoggerFactory.getLogger("PlamesAssembler"), testFolder, new File("./factory/common-prototype"));
 			request.setBootloader((PartBootloader) PartBootloader.findByName("Plames Bootloader"));
 			request.setCore((PartCore) PartBootloader.findByName("Plames Core"));
 			

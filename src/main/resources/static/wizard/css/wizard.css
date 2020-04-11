@@ -86,7 +86,7 @@
 	flex-basis: 40vw;
 }
 
-.compile-log-container {
+.build-log-container {
 
 	position: relative;
 	display: block;
@@ -96,7 +96,7 @@
 	padding: 15px;
 }
 
-.compile-log {
+.build-log {
 
 	position: relative;
 	display: block;
@@ -112,7 +112,7 @@
 	word-wrap: break-word;
 }
 
-.compile-log.wait {
+.build-log.wait {
 
 	text-align: center;
 	vertical-align: center;
