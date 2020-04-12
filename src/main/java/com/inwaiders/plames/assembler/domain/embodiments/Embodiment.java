@@ -1,5 +1,7 @@
 package com.inwaiders.plames.assembler.domain.embodiments;
 
+import java.io.File;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +37,8 @@ public abstract class Embodiment<ProviderType extends Provider, DTO extends Embo
 	protected ProviderType provider;
 	
 	public abstract void load(BuildRequest request) throws Exception;
+	
+	public abstract File getJarFile(BuildRequest request);
 	
 	public abstract String getGradleDependencyLine();
 	

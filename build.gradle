@@ -60,7 +60,10 @@ dependencies {
 	compile group: 'org.postgresql', name: 'postgresql'
 	
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
-	
+
+	compile group: 'net.lingala.zip4j', name: 'zip4j', version: '1.3.2'
+
+
 	compile project(":Plames-ECO")
 }
 

@@ -1,5 +1,7 @@
 package com.inwaiders.plames.assembler.domain.embodiments;
 
+import java.io.File;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -13,6 +15,11 @@ public class Artifact extends Embodiment {
 	@Override
 	public void load(BuildRequest request) throws Exception {
 		
+	}
+	
+	public File getJarFile(BuildRequest request) {
+		
+		return null;
 	}
 	
 	@Override

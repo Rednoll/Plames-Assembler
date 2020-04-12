@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.inwaiders.plames.assembler.domain.build.BuildRequest;
 import com.inwaiders.plames.assembler.domain.parts.Compilable;
@@ -53,6 +50,26 @@ public class GradleProject extends Embodiment<SrcProvider<?>, GradleProjectDto> 
 			logger.info("Use deploy.gradle file instead build.gradle for project: "+name);
 			Files.copy(deployFile.toPath(), new File(projectFolder, "build.gradle").toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
+	}
+	
+	public File getJarFile(BuildRequest request) {
+		
+		File rootFolder = request.getRootFolder();
+		
+		File libs = new File(rootFolder, name+"\\build\\libs\\");
+		
+		File jar = null;
+		
+		for(File suspect : libs.listFiles()) {
+				
+			if(suspect.getName().endsWith(".jar")) {
+				
+				jar = suspect;
+				break;
+			}
+		}
+		
+		return jar;
 	}
 	
 	@Override
