@@ -26,7 +26,7 @@ bootJar {
 	manifest {
 		
 		attributes 'Main-Class': "org.springframework.boot.loader.PropertiesLauncher"
-		attributes 'Start-Class': "com.inwaiders.plames.PlamesAssembler"
+		attributes 'Start-Class': "enterprises.inwaiders.plames.PlamesAssembler"
 	}
 }
 
