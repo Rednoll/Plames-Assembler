@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import enterprises.inwaiders.plames.assembler.MainConfig;
+import enterprises.inwaiders.plames.assembler.domain.embodiments.GradleProject;
+import enterprises.inwaiders.plames.assembler.domain.parts.Part;
+import enterprises.inwaiders.plames.assembler.domain.parts.PartModule;
+import enterprises.inwaiders.plames.assembler.domain.providers.git.GitRepository;
+import enterprises.inwaiders.plames.eco.domain.user.User;
 
 @SpringBootApplication
 public class PlamesAssembler {
@@ -42,15 +47,39 @@ public class PlamesAssembler {
 		/*
 		User user = User.findByNickname("test_user");
 		
-		Part module = PartCore.create();
+		Part module = PartModule.create();
 			module.setOwner(user);
-			module.setName("Plames Core");
+			module.setName("Plames Management Module");
 			
 			GradleProject project = new GradleProject();
-				project.setName("Plames-Core");
+				project.setName("Plames-Management-Module");
 				
 				GitRepository repo = new GitRepository();
-					repo.setAddress("https://github.com/Rednoll/Plames-Core.git");
+					repo.setAddress("https://github.com/Rednoll/Plames-Management-Module.git");
+					repo.setPublic(false);
+					repo.setOwner(user);
+					
+				repo.save();
+				
+				project.setProvider(repo);
+				
+			project.save();
+			
+			module.setEmbodiment(project);
+		
+		module.save();
+		
+		/*
+		
+		module = PartModule.create();
+			module.setOwner(user);
+			module.setName("Plames Web Control Module");
+			
+			project = new GradleProject();
+				project.setName("Plames-Web-Control-Module");
+				
+				repo = new GitRepository();
+					repo.setAddress("https://github.com/Rednoll/Plames-Web-Control-API.git");
 					repo.setPublic(false);
 					repo.setOwner(user);
 					
