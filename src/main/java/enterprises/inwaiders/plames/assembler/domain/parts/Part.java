@@ -1,6 +1,8 @@
 package enterprises.inwaiders.plames.assembler.domain.parts;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import enterprises.inwaiders.plames.assembler.dao.parts.PartRepository;
@@ -45,8 +49,12 @@ public abstract class Part {
 	@Column(name = "icon", length = 1024)
 	private String icon = null;
 	
+	@ManyToMany
+	@JoinTable(name = "dependencies_mtm", joinColumns = @JoinColumn(name = "part_id"), inverseJoinColumns = @JoinColumn(name = "dependency_id"))
+	private Set<Part> dependencies = new HashSet<>();
+	
 	public void load(BuildRequest request) throws Exception {
-
+		
 		embodiment.load(request);
 	}
 	

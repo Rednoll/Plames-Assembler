@@ -33,7 +33,7 @@ async function init() {
     modulesArea = new PlamesPart.LabelsArea(modulesList, false);
         modulesArea.setTextOnEmpty("Please add modules from repository!");
 
-    $("#modules-search").load("../resources/wizard/htmls/plames_modules_search.html");
+    $("#modules-search").load("../resources/assembler/wizard/htmls/plames_modules_search.html");
 
     let PlamesModulesSearch = await import("./plames_modules_search.js"); 
 

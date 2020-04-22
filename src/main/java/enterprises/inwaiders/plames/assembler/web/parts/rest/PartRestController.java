@@ -23,7 +23,10 @@ import enterprises.inwaiders.plames.assembler.domain.parts.Part;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartBootloader;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartCore;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartModule;
+import enterprises.inwaiders.plames.assembler.dto.parts.PartBootloaderDto;
+import enterprises.inwaiders.plames.assembler.dto.parts.PartCoreDto;
 import enterprises.inwaiders.plames.assembler.dto.parts.PartDto;
+import enterprises.inwaiders.plames.assembler.dto.parts.PartModuleDto;
 
 @RestController
 @RequestMapping("/rest/parts")
@@ -64,26 +67,51 @@ public class PartRestController {
 	}
 	
 	@GetMapping("/bootloaders")
-	public List<PartBootloader> findBootloaders() {
+	public List<PartBootloaderDto> findBootloaders() {
 		
-		return bootloadersRep.findAll();
+		List<PartBootloaderDto> dtos = new ArrayList<>();
+		List<PartBootloader> bootloaders = bootloadersRep.findAll();
+		
+		for(PartBootloader bootloader : bootloaders) {
+			
+			dtos.add(bootloader.toDto());
+		}
+		
+		return dtos;
 	}
 	
 	@GetMapping("/cores")
-	public List<PartCore> findCores() {
+	public List<PartCoreDto> findCores() {
 		
-		return coresRep.findAll();
+		List<PartCoreDto> dtos = new ArrayList<>();
+		List<PartCore> cores = coresRep.findAll();
+		
+		for(PartCore core : cores) {
+			
+			dtos.add(core.toDto());
+		}
+		
+		return dtos;
 	}
 	
 	@GetMapping("/modules")
-	public List<PartModule> findModules(@RequestParam(required = false) String name) {
+	public List<PartModuleDto> findModules(@RequestParam(required = false) String name) {
 		
 		if(name == null) {
 			
 			name = "";
 		}
 		
-		return modulesRep.findByNameContainingIgnoreCaseOrderByName(name);
+		List<PartModule> modules = modulesRep.findByNameContainingIgnoreCaseOrderByName(name);
+		
+		List<PartModuleDto> dtos = new ArrayList<>();
+		
+		for(PartModule module : modules) {
+			
+			dtos.add(module.toDto());
+		}
+		
+		return dtos;
 	}
 	
 	@GetMapping("")
@@ -92,7 +120,10 @@ public class PartRestController {
 		List<PartDto> dtos = new ArrayList<>();
 		List<Part> parts = Part.findAll();
 		
-		parts.forEach((Part part)-> dtos.add(part.toDto()));
+		for(Part part : parts) {
+			
+			dtos.add(part.toDto());
+		}
 		
 		return dtos;
 	}

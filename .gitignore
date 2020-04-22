@@ -31,7 +31,10 @@ out/
 ### VS Code ###
 .vscode/
 
+
 /test work directory
+gradle
+src/main/resources/static/node_modules
 
 build
 bin

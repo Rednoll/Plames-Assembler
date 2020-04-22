@@ -16,7 +16,7 @@ export class LabelsArea {
 
         $.ajax({
 
-            url: "../resources/wizard/htmls/plames_parts_area.html",
+            url: "../resources/assembler/wizard/htmls/plames_parts_area.html",
             type: "GET",
             dataType: "HTML",
             async: false

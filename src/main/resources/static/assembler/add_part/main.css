@@ -1,0 +1,67 @@
+#main-body-container {
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+
+#addpart-form-container {
+
+	position: relative;
+	box-shadow: 0 0 3.5px rgba(0, 0, 0, 0.5);
+
+	width: 84vmin;
+	height: 72vmin;
+}
+
+#addpart-form {
+
+	position: relative;
+
+	box-sizing: border-box;
+
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	margin: 0px;
+}
+
+#embodimen-container {
+
+	position: relative;
+
+	box-sizing: border-box;
+
+	width: calc(100% - 20px);
+
+	margin: 0px;
+	margin-left: 10px;
+	margin-right: 10px;
+
+	border: none;
+	border-top: 1px solid lightgrey;
+	border-bottom: 1px solid lightgrey;
+
+	padding: 10px;
+}
+
+#embodiment-choose-container {
+
+	position: relative;
+
+	display: flex;
+	flex-direction: row;
+
+	box-sizing: border-box;
+
+	width: 100%;
+}

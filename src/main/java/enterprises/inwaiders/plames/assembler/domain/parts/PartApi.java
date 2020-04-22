@@ -29,6 +29,11 @@ public class PartApi extends Part {
 		
 	}
 	
+	public static PartApi findByName(String name) {
+		
+		return repository.findByName(name);
+	}
+	
 	public static PartApi findById(Long id) {
 		
 		return repository.getOne(id);

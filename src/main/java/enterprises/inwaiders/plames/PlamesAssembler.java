@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import enterprises.inwaiders.plames.assembler.MainConfig;
 import enterprises.inwaiders.plames.assembler.domain.embodiments.GradleProject;
 import enterprises.inwaiders.plames.assembler.domain.parts.Part;
+import enterprises.inwaiders.plames.assembler.domain.parts.PartApi;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartModule;
 import enterprises.inwaiders.plames.assembler.domain.providers.git.GitRepository;
 import enterprises.inwaiders.plames.eco.domain.user.User;
@@ -45,17 +46,18 @@ public class PlamesAssembler {
 		*/
 		
 		/*
+		
 		User user = User.findByNickname("test_user");
 		
-		Part module = PartModule.create();
+		Part module = PartApi.create();
 			module.setOwner(user);
-			module.setName("Plames Management Module");
+			module.setName("Plames API");
 			
 			GradleProject project = new GradleProject();
-				project.setName("Plames-Management-Module");
+				project.setName("Plames-API");
 				
 				GitRepository repo = new GitRepository();
-					repo.setAddress("https://github.com/Rednoll/Plames-Management-Module.git");
+					repo.setAddress("https://github.com/Rednoll/Plames-API.git");
 					repo.setPublic(false);
 					repo.setOwner(user);
 					
@@ -70,7 +72,7 @@ public class PlamesAssembler {
 		module.save();
 		
 		/*
-		
+	
 		module = PartModule.create();
 			module.setOwner(user);
 			module.setName("Plames Web Control Module");
