@@ -235,7 +235,11 @@ class AddPartForm extends React.Component {
 
 						<div style={{padding: "10px"}}>
 							
-							<PartsArea />
+							<ThemeProvider theme={mainTheme}>
+							
+								<PartsArea />
+
+							</ThemeProvider>
 
 						</div>
 
@@ -251,7 +255,7 @@ class AddPartForm extends React.Component {
 
 						<p id="modules-repository-container-h" class="h-main" style={{padding: "10px", opactiy: "0", borderBottom: "1px solid lightgrey"}}>Modules Repository</p>
 
-						<PartsSearch theme={mainTheme} />
+						<PartsSearch />
 
 					</div>
 				

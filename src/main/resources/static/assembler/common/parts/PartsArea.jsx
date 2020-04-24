@@ -27,13 +27,20 @@ function PartLabel(props){
 
 	const openContextMenu = (e)=> {
 
-		e.preventDefault();
+		if($(e.target).closest(".plames-part-label").prop("class") != undefined) {
 
-		setState({mouseX: e.clientX - 2, mouseY: e.clientY - 4})
+			e.preventDefault();
+
+			setState({mouseX: e.clientX - 2, mouseY: e.clientY - 4})
+		}
+		else {
+
+			handleClose();
+		}
 	};
 
 	const handleClose = ()=> {
-
+		
 		setState(initialState);
 	};
 
@@ -43,32 +50,30 @@ function PartLabel(props){
 		handleClose();
 	};
 
-	alert("theme: "+props.theme);
-
 	return (
 
-		<ThemeProvider theme={props.theme}>
+		<div onContextMenu={openContextMenu} onClick={(e)=> {selectPart(part)}} className={"plames-part-label " + (props.selected ? "selected" : "")}>
 
-			<div onContextMenu={openContextMenu} onClick={(e)=> {selectPart(part)}} className={"plames-part-label " + (props.selected ? "selected" : "")}>
+			<img className="icon" src={part.icon}></img>
+			<p className="name">{part.name}</p>
 
-				<img className="icon" src={part.icon}></img>
-				<p className="name">{part.name}</p>
+			<Menu keepMounted open={state.mouseY !== null} onClose={handleClose} anchorReference="anchorPosition" anchorPosition={state.mouseX !== null && state.mouseY !== null ? {top: state.mouseY, left: state.mouseX} : undefined}>
 
-				<Menu keepMounted open={state.mouseY !== null} onClose={handleClose} anchorReference="anchorPosition" anchorPosition={state.mouseX !== null && state.mouseY !== null ? {top: state.mouseY, left: state.mouseX} : undefined}>
+				<MenuItem onClick={removePartHandler}>
 
-					<MenuItem onClick={removePartHandler}>
+					<div className="menu-item" onMouseLeave={handleClose}>
 						
 						<img class="part-context-menu-img" src="../resources/assembler/common/images/stop.svg"></img>
 
-	          			<Typography color="textPrimary">remove</Typography>
+          				<Typography color="textPrimary">remove</Typography>
+          			
+          			</div>
 
-					</MenuItem>
+				</MenuItem>
 
-				</Menu>
+			</Menu>
 
-			</div>
-
-		</ThemeProvider>
+		</div>
 	);
 }
 
@@ -123,7 +128,7 @@ export default class PartsArea extends React.Component {
 
 			<div className="plames-parts-area">
 				
-				{parts.map((part)=> <PartLabel id={part.id} theme={this.props.theme} selected={this.state.selectedPart.id == part.id} part={part} selectPart={(part)=> this.selectPart(part)} removePart={(part)=> this.removePart(part)}/>)}
+				{parts.map((part)=> <PartLabel id={part.id} selected={this.state.selectedPart.id == part.id} part={part} selectPart={(part)=> this.selectPart(part)} removePart={(part)=> this.removePart(part)}/>)}
 
 				{parts.length == 0 &&
 
