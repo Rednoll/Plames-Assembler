@@ -22,6 +22,18 @@ public class GithubToken extends GitCredential<GithubTokenDto> {
 		this.token = token;
 	}
 	
+	public String getDisplayId() {
+		
+		if(token.length() > 8) {
+			
+			return token.substring(0, 4)+"..."+token.substring(token.length()-4);
+		}
+		else {
+			
+			return token; //TODO: Security exception!
+		}
+	}
+	
 	public void loadFromDto(GithubTokenDto dto) {
 		
 		this.token = dto.token;

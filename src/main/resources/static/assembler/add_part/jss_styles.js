@@ -1,12 +1,26 @@
 const styles = {
 
-	addPartFormField: {
+	formControl: {
 
-		marginBottom: "2.5vmin"
+		minWidth: 120,
+		marginBottom: "16px"
 	},
-	addPartFormFieldInput: {
+	formControlName: {
 
-		color: "#6D8593"
+		minWidth: "32ch",
+		maxWidth: "12vmin",
+		marginBottom: "16px"
+	},
+	formControlGitAddress: {
+
+		minWidth: "32ch",
+		maxWidth: "12vmin",
+		marginBottom: "16px"
+	},
+	formControlGitCredential: {
+
+		minWidth: 180,
+		marginBottom: "16px"
 	}
 }
 

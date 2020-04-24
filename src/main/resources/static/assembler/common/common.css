@@ -18,7 +18,34 @@
 	font-weight: bold;
 }
 
+.h-main {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 22;
+	font-weight: 550;
+	color: #7892A3;
+	margin: 0px;
+}
+
+.h-sub {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 18;
+	font-weight: 550;
+	color: #7892A3;
+	margin: 0px;
+}
+
 .prototype {
 
     display: none !important;
+}
+
+.standard-text {
+
+	font-family: "Metropolis", Arial, sans-serif;
+	font-size: 16;
+	font-weight: 550;
+	color: silver;
+	margin: 0px;
 }

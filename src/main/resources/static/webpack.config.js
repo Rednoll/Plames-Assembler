@@ -11,18 +11,22 @@ module.exports = {
 		filename: '[name].bundle.js'
 	},
 	resolve: {
-		extensions: ['.js', '.jsx']
+		extensions: ['.js', '.jsx', '.css']
 	},
 	module: {
-        rules: [
-            {
+		rules: [
+			{
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
 				query: {
 					presets: ["@babel/preset-env", "@babel/preset-react"]
 				}
-	       }
+			},
+			{
+				test: /\.css$/i,
+				use: ['style-loader', 'css-loader'],
+			},
         ]
     },
 };
