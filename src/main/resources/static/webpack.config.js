@@ -11,7 +11,7 @@ module.exports = {
 		filename: '[name].bundle.js'
 	},
 	resolve: {
-		extensions: ['.js', '.jsx', '.css']
+		extensions: ['.js', '.jsx', '.css', '.svg']
 	},
 	module: {
 		rules: [
@@ -27,6 +27,10 @@ module.exports = {
 				test: /\.css$/i,
 				use: ['style-loader', 'css-loader'],
 			},
+			{
+				test: /\.svg$/,
+				use: ['@svgr/webpack']
+			}
         ]
     },
 };

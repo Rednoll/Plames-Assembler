@@ -16,6 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 
 import PartsSearch from "../common/parts/PartsSearch";
+import PartsArea from "../common/parts/PartsArea";
 
 import styles from "./jss_styles.js";
 import mainTheme from "../common/jss_styles.jsx";
@@ -228,17 +229,29 @@ class AddPartForm extends React.Component {
 
 					</div>
 
+					<div id="dependencies-container">
+
+						<p id="dependencies-container-h" class="h-main" style={{margin: "10px", opactiy: "0"}}>Dependencies</p>
+
+						<div style={{padding: "10px"}}>
+							
+							<PartsArea />
+
+						</div>
+
+					</div>
+
 				</div>
 
 				<div style={{borderLeft: "1px solid lightgrey", height: "100%"}}></div>
 
 				<div id="form-right-block">
 					
-					<div id="dependencies-container">
+					<div id="modules-repository-container">
 
-						<p id="dependencies-container-container-h" class="h-main" style={{padding: "10px", opactiy: "0", borderBottom: "1px solid lightgrey"}}>Modules Repository</p>
+						<p id="modules-repository-container-h" class="h-main" style={{padding: "10px", opactiy: "0", borderBottom: "1px solid lightgrey"}}>Modules Repository</p>
 
-						<PartsSearch />
+						<PartsSearch theme={mainTheme} />
 
 					</div>
 				

@@ -2,7 +2,7 @@ import React from 'react';
 
 import $ from 'jquery';
 
-import "./PartsSearch.css"
+import "./PartsSearch.css";
 
 const restPartsAddress = "../rest/parts"
 
