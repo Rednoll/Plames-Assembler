@@ -112,6 +112,9 @@ class AddPartForm extends React.Component {
 		};
 		
 		addPartForm = this;
+
+		this.dependenciesArea = React.createRef();
+		this.partsSearch = React.createRef();
 	}
 
 	render() {
@@ -210,7 +213,7 @@ class AddPartForm extends React.Component {
 								<div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
 									
 									<FormControl className={classes.formControlGitAddress}>
-										
+
 										<TextField id="git-address-field" name="git-address" label="Address" />
 
 									</FormControl>
@@ -237,7 +240,7 @@ class AddPartForm extends React.Component {
 							
 							<ThemeProvider theme={mainTheme}>
 							
-								<PartsArea />
+								<PartsArea ref={this.dependenciesArea} partsSearch={this.partsSearch}/>
 
 							</ThemeProvider>
 
@@ -255,7 +258,7 @@ class AddPartForm extends React.Component {
 
 						<p id="modules-repository-container-h" class="h-main" style={{padding: "10px", opactiy: "0", borderBottom: "1px solid lightgrey"}}>Modules Repository</p>
 
-						<PartsSearch />
+						<PartsSearch restPartsAddress="../rest/parts/all" ref={this.partsSearch} partsArea={this.dependenciesArea}/>
 
 					</div>
 				

@@ -1,4 +1,13 @@
 /// <reference path="./plames_part.ts" />
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from "jquery";
+
+import { makeStyles } from '@material-ui/core/styles';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
+import Typography from '@material-ui/core/Typography';
 
 let bootloadersArea = null;
 let coresArea = null;
@@ -206,4 +215,25 @@ function loadBuildLog(linesCount) {
         
         $(jsLogContainer).stop().animate({scrollTop: jsLogContainer.scrollHeight}, 250);
     });
+}
+
+class BuildProgressBar extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+
+    render() {
+
+        return (
+
+            <Stepper alternativeLabel nonLinear activeStep={}>
+
+            </Stepper>
+        );
+    }
 }

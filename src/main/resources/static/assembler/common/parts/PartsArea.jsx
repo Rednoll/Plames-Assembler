@@ -4,6 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import MenuList from '@material-ui/core/MenuList';
 
 import $ from 'jquery';
 
@@ -31,7 +32,7 @@ function PartLabel(props){
 
 			e.preventDefault();
 
-			setState({mouseX: e.clientX - 2, mouseY: e.clientY - 4})
+			setState({mouseX: e.clientX - 4, mouseY: e.clientY - 8})
 		}
 		else {
 
@@ -39,7 +40,7 @@ function PartLabel(props){
 		}
 	};
 
-	const handleClose = ()=> {
+	const handleClose = (e)=> {
 		
 		setState(initialState);
 	};
@@ -57,17 +58,13 @@ function PartLabel(props){
 			<img className="icon" src={part.icon}></img>
 			<p className="name">{part.name}</p>
 
-			<Menu keepMounted open={state.mouseY !== null} onClose={handleClose} anchorReference="anchorPosition" anchorPosition={state.mouseX !== null && state.mouseY !== null ? {top: state.mouseY, left: state.mouseX} : undefined}>
+			<Menu keepMounted open={state.mouseY !== null} MenuListProps={{onMouseLeave: handleClose}} onClose={handleClose} anchorReference="anchorPosition" anchorPosition={state.mouseX !== null && state.mouseY !== null ? {top: state.mouseY, left: state.mouseX} : undefined}>
 
 				<MenuItem onClick={removePartHandler}>
 
-					<div className="menu-item" onMouseLeave={handleClose}>
-						
-						<img class="part-context-menu-img" src="../resources/assembler/common/images/stop.svg"></img>
+					<img class="part-context-menu-img" src="../resources/assembler/common/images/stop.svg"></img>
 
-          				<Typography color="textPrimary">remove</Typography>
-          			
-          			</div>
+	      			<Typography color="textPrimary">remove</Typography>
 
 				</MenuItem>
 
@@ -88,9 +85,21 @@ export default class PartsArea extends React.Component {
 			selectedPart: {},
 			selectable: false
 		};
+	}
 
-		this.addPart({id: 0, name: "Test Name", icon: "https://vectr.com/redn_oll/gmqIE7wVT.svg?width=520&height=210&select=gmqIE7wVTpage0"})
-		this.addPart({id: 1, name: "Test Name 2", icon: "https://vectr.com/redn_oll/gmqIE7wVT.svg?width=520&height=210&select=gmqIE7wVTpage0"})
+	hasPart(part) {
+
+		for(let index in this.state.parts) {
+
+			let suspect = this.state.parts[index];
+
+			if(suspect.id == part.id) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	selectPart(part) {
@@ -108,6 +117,11 @@ export default class PartsArea extends React.Component {
 
 			parts: this.state.parts
 		});
+
+		if(this.props.partsSearch != undefined && this.props.partsSearch.current != null) {
+
+			this.props.partsSearch.current.setState({});
+		}
 	}
 
 	removePart(part) {
@@ -118,6 +132,11 @@ export default class PartsArea extends React.Component {
 
 			parts: this.state.parts
 		});	
+
+		if(this.props.partsSearch != undefined && this.props.partsSearch.current != null) {
+
+			this.props.partsSearch.current.setState({});
+		}
 	}
 
 	render() {

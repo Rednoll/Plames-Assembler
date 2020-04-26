@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import enterprises.inwaiders.plames.assembler.dao.parts.PartBootloaderRepository;
 import enterprises.inwaiders.plames.assembler.dao.parts.PartCoreRepository;
 import enterprises.inwaiders.plames.assembler.dao.parts.PartModuleRepository;
+import enterprises.inwaiders.plames.assembler.dao.parts.PartRepository;
 import enterprises.inwaiders.plames.assembler.domain.parts.Part;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartBootloader;
 import enterprises.inwaiders.plames.assembler.domain.parts.PartCore;
@@ -25,6 +26,9 @@ import enterprises.inwaiders.plames.assembler.dto.parts.PartModuleDto;
 @RestController
 @RequestMapping("/rest/parts")
 public class PartRestController {
+	
+	@Autowired
+	private PartRepository<Part, Long> partsRep;
 	
 	@Autowired
 	private PartBootloaderRepository bootloadersRep;
@@ -95,11 +99,11 @@ public class PartRestController {
 		return dtos;
 	}
 	
-	@GetMapping("")
-	public List<PartDto> findAll() {
-	
+	@GetMapping("/all")
+	public List<PartDto> findAll(@RequestParam(required = false) String name) {
+		
 		List<PartDto> dtos = new ArrayList<>();
-		List<Part> parts = Part.findAll();
+		List<Part> parts = partsRep.findByNameContainingIgnoreCaseOrderByName(name);
 		
 		for(Part part : parts) {
 			

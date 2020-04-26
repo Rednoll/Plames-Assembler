@@ -4,7 +4,8 @@ var webpack = require('webpack');
 module.exports = {
 	entry: {
 		
-		add_part: "./assembler/add_part/main.jsx"
+		add_part: "./assembler/add_part/main.jsx",
+		wizard: "./assembler/add_part/wizard.jsx"
 	},
 	output: {
 		path: path.join(__dirname, 'assembler/generated'),

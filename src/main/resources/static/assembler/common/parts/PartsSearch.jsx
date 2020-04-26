@@ -4,13 +4,11 @@ import $ from 'jquery';
 
 import "./PartsSearch.css";
 
-const restPartsAddress = "../rest/parts"
-
 function PartSearchLabel(props) {
 
 	return (
 
-		<div className="suspect-module">
+		<div onClick={props.onClick} className="suspect-module">
 
 			<div className="content" style={{border: "none", marginLeft: "12px", marginRight: "12px", marginBottom: "10px"}}>
 
@@ -46,12 +44,10 @@ export default class PartsSearch extends React.Component {
 
 		let modulesSearch = this;
 
-		$.get(restPartsAddress+"/modules"+searchQuery, (jsonModules)=> {
+		$.get(this.props.restPartsAddress+searchQuery, (jsonModules)=> {
 
 			modulesSearch.setState({parts: jsonModules});
 		});
-
-		console.log("try search: "+this.state.searchName);
 	}
 
 	getSearchQuery() {
@@ -59,9 +55,23 @@ export default class PartsSearch extends React.Component {
 		return "?name="+this.state.searchName;
 	}
 
+	onClickPartLabel(part) {
+
+		const partsArea = this.props.partsArea.current;
+
+		if(partsArea != undefined && partsArea != null) {
+			
+			partsArea.addPart(part);
+		}
+
+		this.setState({});
+	}
+
 	render() {
 
 		const parts = this.state.parts;
+
+		const partsArea = this.props.partsArea.current;
 
 		return (
 
@@ -75,7 +85,13 @@ export default class PartsSearch extends React.Component {
 
 				<div className="suspects-container">
 
-					{parts.map((part)=> <PartSearchLabel name={part.name} description={part.description}/>)}
+					{parts.map((part)=> {
+
+						if(partsArea == undefined || partsArea == null || !partsArea.hasPart(part)) {
+
+							return (<PartSearchLabel onClick={(e)=> {this.onClickPartLabel(part)}} name={part.name} description={part.description}/>);
+						}
+					})}
 
 				</div>
 
