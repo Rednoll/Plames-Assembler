@@ -5,7 +5,7 @@ module.exports = {
 	entry: {
 		
 		add_part: "./assembler/add_part/main.jsx",
-		wizard: "./assembler/add_part/wizard.jsx"
+		wizard: "./assembler/wizard/scripts/main.jsx"
 	},
 	output: {
 		path: path.join(__dirname, 'assembler/generated'),

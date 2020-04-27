@@ -231,7 +231,7 @@ class BuildProgressBar extends React.Component {
 
         return (
 
-            <Stepper alternativeLabel nonLinear activeStep={}>
+            <Stepper alternativeLabel nonLinear>
 
             </Stepper>
         );
