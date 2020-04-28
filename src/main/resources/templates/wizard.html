@@ -1,113 +1,26 @@
 <html>
+    
+    <head>
 
-    <style>
-
-        @import url("../resources/assembler/common/common.css");
-        @import url("../resources/assembler/wizard/css/wizard.css");
-        @import url("../resources/assembler/wizard/css/plames-part-label.css");
-        @import url("../resources/assembler/wizard/css/plames-parts-area.css");
-        @import url("../resources/assembler/wizard/css/plames-modules-search.css");
-
-    </style>
-
-    <body onload="init()" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-
-        <script> var exports = {}; </script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         
+        <style>
+
+            @import url("../resources/assembler/common/common.css");
+            @import url("../resources/assembler/wizard/css/wizard.css");
+            @import url("../resources/assembler/wizard/css/plames-part-label.css");
+            @import url("../resources/assembler/wizard/css/plames-parts-area.css");
+            @import url("../resources/assembler/wizard/css/plames-modules-search.css");
+
+        </style>
+    
+    </head>
+
+    <body style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+
+        <div id="react-body"></div>
+
         <script src="../resources/assembler/generated/wizard.bundle.js"></script>
-
-        <div class="site-module-container vertical" style="width: 80vw; height: 80vh; min-height: 300px; max-height: 60vh; padding: 0px;">
-
-            <div id="settings-content-container" style="display: flex; flex-direction: row; flex-grow: 3.5;">
-
-                <div id="modules-steps-area">
-
-                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
-
-                        <p class="h-main"><span style="color: lightgrey">Step 1. Select </span>Bootloader:</p>
-
-                        <div id="bootloaders-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
-
-                    </div>
-
-                    <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
-
-                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
-
-                        <p class="h-main"><span style="color: lightgrey">Step 2. Select </span>Core:</p>
-
-                        <div id="cores-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
-
-                    </div>
-
-                    <div style="border-bottom: 1px solid lightgrey; margin-top: 12px; margin-bottom: 10px;"></div>
-
-                    <div class="sub-module-container" style="margin-left: 3px; margin-right: 3px;">
-
-                        <p class="h-main"><span style="color: lightgrey">Step 3. Add </span>Modules:</p>
-
-                        <div id="modules-list" class="plames-parts-area" style="margin-top: 10px;"><!-- LOAD BY JQUERY--></div>
-
-                    </div>
-
-                </div>
-
-                <div id="modules-steps-area-delimeter" style="border-left: 1px solid lightgrey"></div>
-
-                <div style="flex-grow: 4; padding-top: 15px; flex-basis: 60vw;">
-
-                    <p class="h-main" style="margin-left: 15px;">Modules repository</p>
-
-                    <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
-
-                    <div id="modules-search" class="sub-module-container plames-modules-search" style="position: relative; box-sizing: border-box;"><!-- LOAD BY JQUERY--></div>
-
-                </div>
-
-            </div>
-
-            <div id="generation-content-container" class="generation-content-container hidden">
-
-                <p class="h-main" style="margin-left: 15px; margin-top: 15px;">Build log</p>
-
-                <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
-
-                <div id="build-log-container" class="build-log-container">
-
-                    <p id="build-log" class="build-log wait"><!-- FILLING BY LOG FROM SERVER --></p>
-
-                </div>
-
-                <div style="border-bottom: 1px solid lightgrey; margin-top: 10px;"></div>
-
-                <div id="build-steps-container" style="position: relative; height: 40; flex-basis: 80px; flex-shrink: 0.0000001;"></div>
-
-            </div>
-
-            <div style="border-bottom: 1px solid lightgrey"></div>
-
-            <div class="sub-module-container" style="padding: 15px; margin-left: 3px; margin-right: 3px; flex-grow: 0;">
-
-                <p class="h-main" style="margin-bottom: 10px;"><span style="color: lightgrey">Step 4. Finally</span> Build & Get!</p>
-
-                <div style="display: flex; flex-direction: row;">
-
-                    <button class="generate-button" onclick="beginGeneration();">GENERATE</button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <ul class="part-context-menu">
-
-            <li data-action="remove" class="menu-item">
-                <img class="icon" src="../resources/assembler/common/images/stop.svg"></img>
-                <p class="name">remove</p>
-            </li>
-
-        </ul>
         
     </body>
 

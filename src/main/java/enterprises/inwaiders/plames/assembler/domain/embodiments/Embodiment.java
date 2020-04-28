@@ -17,7 +17,7 @@ import enterprises.inwaiders.plames.assembler.domain.build.BuildRequest;
 import enterprises.inwaiders.plames.assembler.domain.providers.Provider;
 import enterprises.inwaiders.plames.assembler.domain.providers.ProviderBase;
 import enterprises.inwaiders.plames.assembler.dto.embodiments.EmbodimentDto;
-import enterprises.inwaiders.plames.assembler.dto.providers.ProviderBaseDto;
+import enterprises.inwaiders.plames.assembler.dto.providers.ProviderDtoBase;
 
 @Entity(name = "Embodiment")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -45,7 +45,7 @@ public abstract class Embodiment<ProviderType extends Provider, DTO extends Embo
 	public void loadFromDto(DTO dto) {
 		
 		this.name = dto.name;
-		this.provider = (ProviderType) ProviderBase.findById(((ProviderBaseDto) dto.provider).id);
+		this.provider = (ProviderType) ProviderBase.findById(((ProviderDtoBase) dto.provider).id);
 	}
 	
 	public abstract DTO toDto();

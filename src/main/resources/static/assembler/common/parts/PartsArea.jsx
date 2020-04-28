@@ -82,8 +82,7 @@ export default class PartsArea extends React.Component {
 		this.state = {
 
 			parts: [],
-			selectedPart: {},
-			selectable: false
+			selectedPart: {}
 		};
 	}
 
@@ -104,7 +103,7 @@ export default class PartsArea extends React.Component {
 
 	selectPart(part) {
 
-		if(!this.state.selectable) return;
+		if(!this.props.selectable) return;
 
 		this.setState({selectedPart: part});
 	}

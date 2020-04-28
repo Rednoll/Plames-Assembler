@@ -57,10 +57,12 @@ export default class PartsSearch extends React.Component {
 
 	onClickPartLabel(part) {
 
-		const partsArea = this.props.partsArea.current;
+		let partsArea = this.props.partsArea;
 
-		if(partsArea != undefined && partsArea != null) {
+		if(partsArea != undefined && partsArea.current != null) {
 			
+			partsArea = partsArea.current;
+
 			partsArea.addPart(part);
 		}
 
@@ -71,11 +73,16 @@ export default class PartsSearch extends React.Component {
 
 		const parts = this.state.parts;
 
-		const partsArea = this.props.partsArea.current;
+		let partsArea = this.props.partsArea;
+
+		if(partsArea != undefined) {
+
+			partsArea = partsArea.current;
+		}
 
 		return (
 
-			<div class="search-container">
+			<div className="search-container">
 
 				<div className="search-data-container">
 

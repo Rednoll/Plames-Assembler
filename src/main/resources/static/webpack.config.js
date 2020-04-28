@@ -2,10 +2,12 @@ var packageJSON = require('./package.json');
 var path = require('path');
 var webpack = require('webpack');
 module.exports = {
+	
+	mode: "development",
 	entry: {
 		
 		add_part: "./assembler/add_part/main.jsx",
-		wizard: "./assembler/wizard/scripts/main.jsx"
+		wizard: "./assembler/wizard/main.jsx"
 	},
 	output: {
 		path: path.join(__dirname, 'assembler/generated'),

@@ -67,6 +67,9 @@
 	overflow-y: auto;
 
 	padding: 15px;
+
+	flex-basis: 100%;
+	flex-grow: 100000;
 }
 
 .build-log {
