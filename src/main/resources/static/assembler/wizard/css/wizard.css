@@ -23,7 +23,7 @@
 	border: 0px solid lightgrey;
 }
 
-.generate-button {
+.accent-button {
 
 	font-family: "Metropolis", Arial, sans-serif;
 	font-size: 18;
@@ -40,7 +40,7 @@
 	transition-duration: 0.3s;
 }
 
-.generate-button:hover {
+.accent-button:hover {
 
 	color: white;
 	background-color: #B0D5F2;
@@ -95,7 +95,7 @@
 	color: silver;
 }
 
-.generation-content-container {
+.wizard-content-container {
 
 	position: relative;
 
@@ -109,7 +109,7 @@
 	transition: opacity  0.5s, ease;
 }
 
-.generation-content-container.hidden {
+.wizard-content-container.hidden {
 
 	display: none;
 	opacity: 0;

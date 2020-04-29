@@ -16,12 +16,16 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 import PartsSearch from "../common/parts/PartsSearch";
 import PartsArea from "../common/parts/PartsArea";
+import ProductKeyViewer from "../common/user/ProductKeyViewer";
 
 import styles from "./jss_styles.js";
 import mainTheme from "../common/jss_styles.jsx";
+
+import ClipboardJS from "clipboard";
 
 let loadBuildLogInterval = null;
 
@@ -137,7 +141,7 @@ class Wizard extends React.Component {
 
     beginGeneration() {
         
-        let settingsContainer = $("#settings-content-container");
+        let mainDataContainer = $("#main-data-container");
         let generationContainer = $("#generation-content-container");
 
         let buildProgressBar = this.buildProgressBar;
@@ -166,9 +170,9 @@ class Wizard extends React.Component {
             buildProgressBar.current.loadSteps();
             buildProgressBar.current.startWaitStepChanges();
 
-            settingsContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
+            mainDataContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
 
-                settingsContainer.css("display", "none");
+                mainDataContainer.css("display", "none");
                 generationContainer.removeClass("hidden");
 
                 $.ajax({
@@ -191,6 +195,23 @@ class Wizard extends React.Component {
                 });
 
             });
+
+            $.ajax({
+
+                url: "../ajax/request/wait_build_end",
+                method: "GET",
+                timeout: 3600000
+            })
+            .done((success)=> {
+
+                let finalContentContainer = $("#final-content-container");
+
+                generationContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
+
+                    generationContainer.css("display", "none");
+                    finalContentContainer.removeClass("hidden");
+                });
+            });
         })
         .fail((jqXHR)=> {
 
@@ -210,55 +231,73 @@ class Wizard extends React.Component {
             <ThemeProvider theme={mainTheme}>
             <div class="site-module-container vertical" style={{width: "80vw", height: "70vh", minHeight: "300px", maxHeight: "70vh", padding: "0px"}}>
 
-                <div id="settings-content-container" style={{display: "flex", flexDirection: "row", flexGrow: "3.5"}}>
+                <div id="main-data-container" class="wizard-content-container hidden" style={{display: "flex", flexDirection: "column", width: "100%", height: "100%"}}>
 
-                    <div id="modules-steps-area">
+                    <div id="settings-content-container" style={{display: "flex", flexDirection: "row", flexGrow: "3.5"}}>
 
-                        <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
+                        <div id="modules-steps-area">
 
-                            <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 1. Select </span>Bootloader:</p>
+                            <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
 
-                            <PartsArea selectable id="bootloaders-list" ref={this.bootloadersArea} />
+                                <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 1. Select </span>Bootloader:</p>
+
+                                <PartsArea selectable id="bootloaders-list" ref={this.bootloadersArea} />
+
+                            </div>
+
+                            <div style={{borderBottom: "1px solid lightgrey", marginTop: "12px", marginBottom: "10px"}}></div>
+
+                            <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
+
+                                <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 2. Select </span>Core:</p>
+
+                                <PartsArea selectable id="cores-list" ref={this.coresArea} />
+
+                            </div>
+
+                            <div style={{borderBottom: "1px solid lightgrey", marginTop: "12px", marginBottom: "10px"}}></div>
+
+                            <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
+
+                                <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 3. Add </span>Modules:</p>
+
+                                <PartsArea id="modules-list" ref={this.modulesArea} partsSearch={this.partsSearch} />
+
+                            </div>
 
                         </div>
 
-                        <div style={{borderBottom: "1px solid lightgrey", marginTop: "12px", marginBottom: "10px"}}></div>
+                        <div id="modules-steps-area-delimeter" style={{borderLeft: "1px solid lightgrey"}}></div>
 
-                        <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
+                        <div style={{flexGrow: "4", paddingTop: "15px", flexBasis: "60vw"}}>
 
-                            <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 2. Select </span>Core:</p>
+                            <p class="h-main" style={{marginLeft: "15px"}}>Modules repository</p>
 
-                            <PartsArea selectable id="cores-list" ref={this.coresArea} />
+                            <div style={{borderBottom: "1px solid lightgrey", marginTop: "10px"}}></div>
 
-                        </div>
-
-                        <div style={{borderBottom: "1px solid lightgrey", marginTop: "12px", marginBottom: "10px"}}></div>
-
-                        <div class="sub-module-container" style={{marginLeft: "3px", marginRight: "3px"}}>
-
-                            <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 3. Add </span>Modules:</p>
-
-                            <PartsArea id="modules-list" ref={this.modulesArea} partsSearch={this.partsSearch} />
+                            <PartsSearch id="modules-search" ref={this.partsSearch} partsArea={this.modulesArea} restPartsAddress="../rest/parts/modules" class="sub-module-container plames-modules-search" style={{position: "relative", boxSizing: "border-box"}} />
 
                         </div>
 
                     </div>
 
-                    <div id="modules-steps-area-delimeter" style={{borderLeft: "1px solid lightgrey"}}></div>
+                    <div style={{borderBottom: "1px solid lightgrey"}}></div>
 
-                    <div style={{flexGrow: "4", paddingTop: "15px", flexBasis: "60vw"}}>
+                    <div class="sub-module-container" style={{padding: "15px", marginLeft: "3px", marginRight: "3px", flexGrow: "0"}}>
 
-                        <p class="h-main" style={{marginLeft: "15px"}}>Modules repository</p>
+                        <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 4. Finally</span> Build & Get!</p>
 
-                        <div style={{borderBottom: "1px solid lightgrey", marginTop: "10px"}}></div>
+                        <div style={{display: "flex", flexDirection: "row"}}>
 
-                        <PartsSearch id="modules-search" ref={this.partsSearch} partsArea={this.modulesArea} restPartsAddress="../rest/parts/modules" class="sub-module-container plames-modules-search" style={{position: "relative", boxSizing: "border-box"}} />
+                            <button class="generate-button accent-button" onClick={this.beginGeneration}>GENERATE</button>
+
+                        </div>
 
                     </div>
-
+                
                 </div>
 
-                <div id="generation-content-container" class="generation-content-container hidden">
+                <div id="generation-content-container" class="wizard-content-container hidden">
 
                     <p class="h-main" style={{marginLeft: "15px", marginTop: "15px"}}>Build log</p>
 
@@ -276,16 +315,14 @@ class Wizard extends React.Component {
 
                 </div>
 
-                <div style={{borderBottom: "1px solid lightgrey"}}></div>
+                <div id="final-content-container" class="wizard-content-container">
 
-                <div class="sub-module-container" style={{padding: "15px", marginLeft: "3px", marginRight: "3px", flexGrow: "0"}}>
+                    <div style={{ width: "35%" }}>
+                        
+                        <ProductKeyViewer withLabel />
 
-                    <p class="h-main" style={{marginBottom: "10px"}}><span style={{color: "lightgrey"}}>Step 4. Finally</span> Build & Get!</p>
-
-                    <div style={{display: "flex", flexDirection: "row"}}>
-
-                        <button class="generate-button" onClick={this.beginGeneration}>GENERATE</button>
-
+                        <button class="accent-button">DOWNLOAD</button>
+                    
                     </div>
 
                 </div>
@@ -423,3 +460,5 @@ class BuildProgressBar extends React.Component {
 const StyledWizard = withStyles(styles)(Wizard);
 
 ReactDOM.render(<StyledWizard />, document.querySelector("#react-body"));
+
+new ClipboardJS(".btn");
