@@ -103,8 +103,10 @@
 	flex-direction: column;
 	opacity: 1;
 
+	width: 100%;
+	height: 100%;
+
 	flex: 3.5;
-	min-height: 0;
 
 	transition: opacity  0.5s, ease;
 }
@@ -115,4 +117,23 @@
 	opacity: 0;
 
 	transition: opacity  0.5s, ease;
+}
+
+#final-content-container {
+
+	justify-content: center;
+	align-items: center;
+}
+
+#success-plames-icon {
+
+	position: relative;
+
+	box-sizing: border-box;
+
+	width: auto;
+	height: 20%;
+
+	margin-top: 5%;
+	margin-bottom: 2.5%;
 }

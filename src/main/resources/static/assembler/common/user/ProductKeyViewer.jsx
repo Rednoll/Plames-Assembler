@@ -28,7 +28,11 @@ class ProductKeyViewer extends React.Component {
 		this.state = {
 
 			productKey: null,
-			elevation: 2
+			elevation: 2,
+			tooltip: {
+
+				title: "Just click"
+			}
 		}
 
 		this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -64,11 +68,12 @@ class ProductKeyViewer extends React.Component {
 	onMouseLeave(e) {
 
 		this.setState({elevation: 2});
+		setTimeout(()=> this.setState({tooltip: {title: "Just click!"}}), 500);
 	}
 
 	onClick(e) {
 
-		this.setState({elevation: 2});
+		this.setState({elevation: 2, tooltip: {title: "Copied!"}});
 
 		setTimeout(()=> this.setState({elevation: 4}), 200);
 	}
@@ -89,7 +94,7 @@ class ProductKeyViewer extends React.Component {
 					</div>
 				}
 
-				<Tooltip title="Copy" enterDelay={200}>
+				<Tooltip title={this.state.tooltip.title} enterDelay={200}>
 				<Paper onClick={this.onClick} className={classes.root} elevation={this.state.elevation} onClick={this.onClick} onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
 
 					<div class="btn" data-clipboard-text={this.state.productKey}>

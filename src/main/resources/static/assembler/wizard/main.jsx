@@ -192,25 +192,28 @@ class Wizard extends React.Component {
 
                         waitQueue();
                     }
+
+                    $.ajax({
+
+                        url: "../ajax/request/wait_build_end",
+                        method: "GET",
+                        timeout: 3600000
+                    })
+                    .done((success)=> {
+
+                        if(success) {
+
+                            let finalContentContainer = $("#final-content-container");
+
+                            generationContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
+
+                                generationContainer.css("display", "none");
+                                finalContentContainer.removeClass("hidden");
+                            });
+                        }
+                    });
                 });
 
-            });
-
-            $.ajax({
-
-                url: "../ajax/request/wait_build_end",
-                method: "GET",
-                timeout: 3600000
-            })
-            .done((success)=> {
-
-                let finalContentContainer = $("#final-content-container");
-
-                generationContainer.animate({"opacity": "0"}, 500, "swing", ()=> {
-
-                    generationContainer.css("display", "none");
-                    finalContentContainer.removeClass("hidden");
-                });
             });
         })
         .fail((jqXHR)=> {
@@ -231,7 +234,7 @@ class Wizard extends React.Component {
             <ThemeProvider theme={mainTheme}>
             <div class="site-module-container vertical" style={{width: "80vw", height: "70vh", minHeight: "300px", maxHeight: "70vh", padding: "0px"}}>
 
-                <div id="main-data-container" class="wizard-content-container hidden" style={{display: "flex", flexDirection: "column", width: "100%", height: "100%"}}>
+                <div id="main-data-container" class="wizard-content-container">
 
                     <div id="settings-content-container" style={{display: "flex", flexDirection: "row", flexGrow: "3.5"}}>
 
@@ -289,7 +292,7 @@ class Wizard extends React.Component {
 
                         <div style={{display: "flex", flexDirection: "row"}}>
 
-                            <button class="generate-button accent-button" onClick={this.beginGeneration}>GENERATE</button>
+                            <button class="generate-button accent-button" onClick={this.beginGeneration}>BUILD</button>
 
                         </div>
 
@@ -315,16 +318,16 @@ class Wizard extends React.Component {
 
                 </div>
 
-                <div id="final-content-container" class="wizard-content-container">
-
-                    <div style={{ width: "35%" }}>
-                        
-                        <ProductKeyViewer withLabel />
-
-                        <button class="accent-button">DOWNLOAD</button>
+                <div id="final-content-container" class="wizard-content-container hidden">
                     
-                    </div>
+                    <img id="success-plames-icon" src="../resources/assembler/common/images/plames-color-icon.svg"></img>
 
+                    <p class="h-main" style={{marginBottom: "5%"}}>Build<span style={{color: "#27E123"}}> SUCCESS</span></p>
+
+                    <ProductKeyViewer withLabel/>
+
+                    <a download="your_plames.zip" class="accent-button" style={{marginTop: "5%", marginBottom: "5%", textDecoration: "none"}} href="../ajax/request/download">DOWNLOAD</a>
+                    
                 </div>
 
             </div>

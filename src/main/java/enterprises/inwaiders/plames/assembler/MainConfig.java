@@ -1,5 +1,6 @@
 package enterprises.inwaiders.plames.assembler;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
@@ -24,10 +25,18 @@ public class MainConfig {
 	@Value("${build.providers.loaders}")
 	public int providersLoadersCount;
 	
+	@Value("${storage.path}")
+	public String storagePath;
+	
+	@Value("${factory.path}")
+	public String factoryPath;
+	
 	@PostConstruct
 	private void post() {
 		
 		BuildRequest.providersLoadService = Executors.newFixedThreadPool(providersLoadersCount);
 		BuildRequestProcessor.initCompileService(this.buildThreadsCount);
+		
+		BuildRequestProcessor.setRootDir(new File(factoryPath));
 	}
 }
