@@ -19,17 +19,6 @@ repositories {
 	mavenCentral()
 }
 
-sourceSets {
-
-    main {
-	
-		resources {
-		
-			exclude 'static/node_modules/**'
-		}
-   }
-}
-
 bootJar {
 
 	enabled = true
@@ -39,8 +28,6 @@ bootJar {
 		attributes 'Main-Class': "org.springframework.boot.loader.PropertiesLauncher"
 		attributes 'Start-Class': "enterprises.inwaiders.plames.PlamesAssembler"
 	}
-	
-	exclude("static/node_modules/**");
 }
 
 jar {

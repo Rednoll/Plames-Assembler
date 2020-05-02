@@ -6,11 +6,11 @@ module.exports = {
 	mode: "development",
 	entry: {
 		
-		add_part: "./assembler/add_part/main.jsx",
-		wizard: "./assembler/wizard/main.jsx"
+		add_part: "./src/main/resources/static/assembler/add_part/main.jsx",
+		wizard: "./src/main/resources/static/assembler/wizard/main.jsx"
 	},
 	output: {
-		path: path.join(__dirname, 'assembler/generated'),
+		path: path.join(__dirname, 'src/main/resources/static/assembler/generated'),
 		filename: '[name].bundle.js'
 	},
 	resolve: {
