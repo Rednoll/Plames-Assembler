@@ -31,6 +31,12 @@ public class MainConfig {
 	@Value("${factory.path}")
 	public String factoryPath;
 	
+	@Value("${docker.address}")
+	public String dockerAddress;
+	
+	@Value("${docker.path}")
+	public String dockerPath;
+	
 	@PostConstruct
 	private void post() {
 		

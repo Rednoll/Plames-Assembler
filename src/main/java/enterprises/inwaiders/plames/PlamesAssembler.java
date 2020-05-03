@@ -1,16 +1,16 @@
 package enterprises.inwaiders.plames;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.core.DockerClientBuilder;
+
 import enterprises.inwaiders.plames.assembler.MainConfig;
-import enterprises.inwaiders.plames.assembler.domain.embodiments.GradleProject;
-import enterprises.inwaiders.plames.assembler.domain.parts.Part;
-import enterprises.inwaiders.plames.assembler.domain.parts.PartApi;
-import enterprises.inwaiders.plames.assembler.domain.parts.PartModule;
-import enterprises.inwaiders.plames.assembler.domain.providers.git.GitRepository;
-import enterprises.inwaiders.plames.eco.domain.user.User;
+import enterprises.inwaiders.plames.assembler.utils.DockerUtils;
 
 @SpringBootApplication
 public class PlamesAssembler {
@@ -19,9 +19,28 @@ public class PlamesAssembler {
 	
 	public static ApplicationContext CONTEXT = null;
 	
+	public static DockerClient DOCKER_CLIENT = null;
+	
+	public static Logger LOGGER = LoggerFactory.getLogger(PlamesAssembler.class);
+	
 	public static void main(String[] args) {
 		
 		CONTEXT = SpringApplication.run(PlamesAssembler.class, args);
+		
+		DOCKER_CLIENT = DockerClientBuilder.getInstance(CONFIG.dockerAddress).build();
+		
+		LOGGER.info("Connect to docker complete! Docker version: "+DOCKER_CLIENT.versionCmd().exec().getVersion());
+		
+		try {
+			
+			DockerUtils.initDockerImages();
+		}
+		catch (InterruptedException e) {
+		
+			e.printStackTrace();
+		}
+		
+//		List<String> images = DOCKER_CLIENT.listImagesCmd().exec().stream().map(image -> Arrays.asList(image.getRepoTags()));
 		
 		/*
 		Logger logger = (Logger) LoggerFactory.getLogger("PlamesAssembler");
