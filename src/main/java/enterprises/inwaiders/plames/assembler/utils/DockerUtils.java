@@ -57,6 +57,7 @@ public class DockerUtils {
 		}
 		
 		semaphore.acquire(dockerImagesFolder.listFiles().length);
+		logger.info("Create images complete.");
 	}
 
 	public static boolean checkImageExistByTag(String tag) {
