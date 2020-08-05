@@ -37,6 +37,9 @@ public class MainConfig {
 	@Value("${docker.path}")
 	public String dockerPath;
 	
+	@Value("${gradle.home}")
+	public String gradleHome;
+	
 	@PostConstruct
 	private void post() {
 		
