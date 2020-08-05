@@ -36,5 +36,5 @@ out/
 gradle
 /node_modules
 
-build
-bin
+/build
+/bin
